@@ -1,31 +1,65 @@
+/**
+ * @desc node createPage.js 文件夹路径（a 或者 a/b） 文件名
+*/
 const fs = require('fs')
 
-var args = process.argv;
-var name = args[2] // 获取文件名称
+const args = process.argv;
+const folder = args[2]; // 获取文件夹名
+const name = args[3]; // 获取文件名称
+
+let folderStr = './src/pages/';
 
 function createJs() {
-    let content = `import '@scss/${name}.scss';`
-    fs.writeFile(`./src/mainfile/${name}.js`,content,(err)=>{
-        if (!err){console.log(`${name}.js创建成功！`)}
+  // name存在
+  if (name) {
+    if (folder.includes('/')) {
+      // 创建多级文件夹
+      const folderArr = folder.split('/');
+      folderArr.forEach(i => {
+        fs.mkdirSync(`${folderStr}${i + '/'}`);
+        folderStr += `${i + '/'}`;
+      })
+    } else {
+      // 创建单个文件夹
+      fs.mkdirSync(`${folderStr}${folder}`);
+      folderStr += `${folder + '/'}`;
+    }
+
+    // 创建文件
+    // 文件内容(`import '@scss/${name}.scss';`)
+    const content = '';
+    fs.writeFile(`${folderStr}${name}.ts`, content, err => {
+      if (!err) { console.log(`${name}.ts创建成功！`); }
     })
-}
-function createScss(){
-    let content = "@import './common.scss';"
-    fs.writeFile(`./src/scss/${name}.scss`,content,(err)=>{
-        if (!err){console.log(`${name}.scss创建成功！`)}
-    })
-}
-function createArt(){
-    fs.readFile('./artTemplate.art',(err,data)=>{
-        if (!err) {
-            fs.writeFile(`./src/pages/${name}.art`,data.toString(),(err)=>{
-                if (!err){console.log(`${name}.art创建成功！`)}
-            })
-        }
-    })
+  } else {
+    if (folder.includes('/')) {
+      // 创建多级文件夹
+      const folderArr = folder.split('/');
+      folderArr.forEach(i => {
+        fs.mkdirSync(`${folderStr}${i + '/'}`);
+        folderStr += `${i + '/'}`;
+      })
+    } else {
+      // 创建单个文件
+      // 文件内容(`import '@scss/${name}.scss';`)
+      const content = '';
+      fs.writeFile(`${folderStr}${folder}.ts`, content, err => {
+        if (!err) { console.log(`${folder}.ts创建成功！`); }
+      })
+    }
+  }
 }
 
+function createScss() {
+  // name不存在，folder包含 / 不创建scss
+  if (!name && folder.includes('/')) {
+    return false;
+  }
+  const content = '';
+  fs.writeFile(`${folderStr}${name}.scss`, content, err => {
+    if (!err) { console.log(`${name ? name : folder }.scss创建成功！`); }
+  })
+}
 
-createJs()
-createScss()
-createArt()
+createJs();
+createScss();
