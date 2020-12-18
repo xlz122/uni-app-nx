@@ -102,7 +102,7 @@
                 </view>
               </view>
               <view class="text-truncate font-size-base text-color-assist">
-                {{ item.props_text }}
+                {{ item.props_text || '' }}
               </view>
             </view>
           </list-cell>

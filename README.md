@@ -1,7 +1,7 @@
 **特别声明：本项目中的展示图片归奈雪の茶所有。如果侵权，请联系删除。**
 ### 说明
 
-本项目仿写 ``tinypuppet`` 大佬的uni-app项目
+本项目仿写 ``tinypuppet`` 的uni-app项目
 
 原项目github地址: [https://github.com/tinypuppet/nxdc-milktea](https://github.com/tinypuppet/nxdc-milktea)
 
@@ -27,6 +27,7 @@
 	- 修改地址
 	- 余额充值
 	- 地图定位
+	- 订单用券
 
 2. 所有数据都是静态的，保存在api文件夹下。
 ### 项目说明
