@@ -503,7 +503,13 @@ export default Vue.extend({
       this.setStore(store);
       this.goods = await (this as any).$api("goods");
       this.loading = false;
-      this.cart = JSON.parse(uni.getStorageSync('cart')) || [];
+      // 获取数据
+      const res = uni.getStorageInfoSync();
+      if (!res.keys.includes("cart")) {
+        this.cart = [];
+      } else {
+        this.cart = JSON.parse(uni.getStorageSync('cart'));
+      }
     },
     // 自取/外卖切换
     takout(): boolean | undefined {

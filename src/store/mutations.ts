@@ -29,11 +29,13 @@ const mutations: Mutations<State> = {
   setReducePointNum(state, pointNum: number) {
     (state.userInfo as any).pointNum -= pointNum;
   },
-  // 购买卡券
-  setCardVoucher(state, result: unknown[]) {
-    result.forEach(item => {
-      state.cardVoucher.push(item);
-    })
+  // 卡券
+  setCardVoucher(state, cardVoucher: unknown[]) {
+    state.cardVoucher = cardVoucher;
+  },
+  // 单张卡券
+  setCoupon(state, coupon: unknown[]) {
+    state.coupon = coupon;
   },
   setStore(state, store: unknown) {
     state.store = store;

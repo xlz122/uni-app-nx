@@ -21,7 +21,7 @@
 								</view>
 								<view class="d-flex justify-content-end align-items-center w-40">
 									<image src="/static/images/order/mobile.png" style="width: 60rpx; height: 60rpx;margin-right: 30rpx;"></image>
-									<image src="/static/images/order/navigation.png" style="width: 60rpx; height: 60rpx;"></image>
+									<image @tap="getPosition" src="/static/images/order/navigation.png" style="width: 60rpx; height: 60rpx;"></image>
 								</view>
 							</view>
 						</list-cell>
@@ -175,6 +175,7 @@
 import Vue from "vue";
 import { mapGetters } from "vuex";
 import listCell from "@/components/list-cell/list-cell.vue";
+import { chooseLocation } from '@/common/map';
 
 export default Vue.extend({
   components: {
@@ -184,6 +185,10 @@ export default Vue.extend({
     ...mapGetters(['order', 'isLogin'])
   },
   methods: {
+		// 获取位置
+    getPosition() {
+      chooseLocation();
+    },
     // 去点餐
     menu(): void {
       uni.switchTab({

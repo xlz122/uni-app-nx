@@ -136,7 +136,7 @@ export default Vue.extend({
     } as Data;
   },
   computed: {
-    ...mapGetters(["isLogin", "userInfo"]),
+    ...mapGetters(["isLogin", "userInfo", "cardVoucher"]),
     // 优惠卷数量
     couponNum() {
       if ((this as any).packages.coupons) {
@@ -238,7 +238,11 @@ export default Vue.extend({
         })
       });
       // 存储购买卡券
-      (this as any).setCardVoucher(result);
+      const cardVoucher = JSON.parse(JSON.stringify((this as any).cardVoucher));
+      result.forEach((item: any) => {
+        cardVoucher.push(item);
+      });
+      (this as any).setCardVoucher(cardVoucher);
       // 更新卡券数量
       (this as any).setCardVoucherNum(result.length);
     }

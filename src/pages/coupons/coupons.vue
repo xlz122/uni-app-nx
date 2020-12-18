@@ -97,13 +97,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Modal from '@/components/modal/modal.vue';
+import Modal from "@/components/modal/modal.vue";
 import JyfParser from "@/components/jyf-parser/jyf-parser.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 interface Data {
+  scene: string;
   exchangeCode: string;
-  tabs: tabsList[],
+  tabs: tabsList[];
   activeTabIndex: number;
   coupons: never[];
   detailModalVisible: boolean;
@@ -118,65 +119,70 @@ interface tabsList {
 export default Vue.extend({
   components: {
     Modal,
-    JyfParser
+    JyfParser,
   },
   data() {
     return {
+      scene: "", // 从何处进入 pay支付
       exchangeCode: "", // 兑换码
       tabs: [
         {
-          title: '全部',
-          value: 'all'
+          title: "全部",
+          value: "all",
         },
         {
-          title: '茶饮券',
-          value: '1'
+          title: "茶饮券",
+          value: "1",
         },
         {
-          title: '酒屋券',
-          value: '2'
-        }
+          title: "酒屋券",
+          value: "2",
+        },
       ],
       // 选中tab
       activeTabIndex: -1,
       coupons: [],
       detailModalVisible: false,
-      coupon: {}
+      coupon: {},
     } as Data;
   },
   computed: {
-    ...mapGetters(['cardVoucher'])
+    ...mapGetters(["cardVoucher"]),
   },
   watch: {
-    activeTabIndex: async function(val: number) {
-			const type: string = this.tabs[val].value;
-			await this.getCoupons(type);
-    }
+    activeTabIndex: async function (val: number) {
+      const type: string = this.tabs[val].value;
+      await this.getCoupons(type);
+    },
+  },
+  onLoad({ scene }: { scene: string }) {
+    (this as any).scene = scene;
   },
   onShow() {
     this.activeTabIndex = 0;
   },
   methods: {
+    ...mapMutations(["setCardVoucher", "setCoupon"]),
     // 兑换
     exchange(): boolean | undefined {
       if (!this.exchangeCode) {
         uni.showToast({
           title: "请输入兑换码",
-          icon: 'none'
-        })
+          icon: "none",
+        });
         return false;
       }
       uni.showToast({
         title: "兑换失败，兑换码无效",
-        icon: "none"
-      })
+        icon: "none",
+      });
     },
     // 查看兑换规则
     seeRule(): void {
       uni.showToast({
         title: "查看兑换规则",
-        icon: 'none'
-      })
+        icon: "none",
+      });
     },
     // tab切换
     handleTab(index: number): void {
@@ -184,55 +190,71 @@ export default Vue.extend({
     },
     // 数据列表
     async getCoupons(type: string): Promise<void> {
-      let coupons = await (this as any).$api('customerCoupons');
-      // 卡券拼接购买卡卷数据
-      coupons = coupons.concat(this.cardVoucher);
-      this.coupons = [];
-			if (type === 'all') {
-				this.coupons = coupons;
-			} else {
-				this.coupons = coupons.filter((item: unknown) => Number((item as any).couponType) === Number(type));
-			}
+      // 只进行请求一次
+      const res = uni.getStorageInfoSync();
+      if (!res.keys.includes("customerCoupons")) {
+        let coupons: never[] = await (this as any).$api("customerCoupons");
+        (this as any).setCardVoucher(coupons);
+        uni.setStorageSync("customerCoupons", coupons);
+      }
+
+      if (type === "all") {
+        this.coupons = this.cardVoucher;
+      } else {
+        this.coupons = this.cardVoucher.filter(
+          (item: unknown) => Number((item as any).couponType) === Number(type)
+        );
+      }
     },
     // 查看详情
     openDetailModal(coupon: unknown): void {
-			this.coupon = coupon;
-			(this.$refs['couponExplain'] as any).setContent((this as any).coupon.couponExplain || '');
-			this.detailModalVisible = true;
+      this.coupon = coupon;
+      (this.$refs["couponExplain"] as any).setContent(
+        (this as any).coupon.couponExplain || ""
+      );
+      this.detailModalVisible = true;
     },
     // 关闭详情
     closeDetailModal(): void {
-			this.detailModalVisible = false;
-			this.coupon = {};
+      this.detailModalVisible = false;
+      this.coupon = {};
     },
     // 详情 - 立即使用
-    useCoupon(): void {
-			uni.switchTab({
-				url: '/pages/menu/menu'
-			})
-		},
+    useCoupon(): boolean | undefined {
+      if (this.scene === "pay") {
+        // 当前卡券数据
+        this.setCoupon(this.coupon);
+        uni.navigateBack({
+          delta: 1,
+        });
+        return false;
+      }
+      uni.switchTab({
+        url: "/pages/menu/menu",
+      });
+    },
     // 历史卡券
     showTip1(): void {
-			uni.showToast({
-				title: '暂无历史卡券',
-				icon: 'none'
-			})
+      uni.showToast({
+        title: "暂无历史卡券",
+        icon: "none",
+      });
     },
     // 赠送记录
     showTip2(): void {
-			uni.showToast({
-				title: '暂无赠送记录',
-				icon: 'none'
-			})
+      uni.showToast({
+        title: "暂无赠送记录",
+        icon: "none",
+      });
     },
     // 第三方卡券
-		showTip3(): void {
-			uni.showToast({
-				title: '暂无第三方卡券',
-				icon: 'none'
-			})
-    }
-  }
+    showTip3(): void {
+      uni.showToast({
+        title: "暂无第三方卡券",
+        icon: "none",
+      });
+    },
+  },
 });
 </script>
 

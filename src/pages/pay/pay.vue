@@ -1,6 +1,6 @@
 <template>
   <view class="container position-relative">
-    <view style="padding-bottom: 70rpx; margin-bottom: 130rpx;">
+    <view style="padding-bottom: 70rpx; margin-bottom: 130rpx">
       <view class="section-1">
         <template v-if="orderType === 'takein'">
           <list-cell class="location">
@@ -130,7 +130,9 @@
             class="flex-fill d-flex justify-content-between align-items-center"
           >
             <view class="text-color-base">奈雪券</view>
-            <view class="text-color-primary">超值购买优惠券大礼包</view>
+            <view class="text-color-primary">{{
+              coupon.title || "超值购买优惠券大礼包"
+            }}</view>
           </view>
         </list-cell>
         <list-cell arrow @click="goToGiftCard">
@@ -143,7 +145,7 @@
         </list-cell>
         <list-cell last>
           <view class="flex-fill d-flex justify-content-end align-items-center">
-            <view>总计￥{{ total }},实付</view>
+            <view>总计￥{{ total }}，实付</view>
             <view class="font-size-extra-lg font-weight-bold"
               >￥{{ amount }}</view
             >
@@ -163,21 +165,32 @@
         <list-cell last :hover="false">
           <text>支付方式</text>
         </list-cell>
-        <list-cell>
+        <list-cell @tap="setPayMode('balancePay')">
           <view
             class="d-flex align-items-center justify-content-between w-100 disabled"
           >
             <view
               class="iconfont iconbalance line-height-100 payment-icon"
             ></view>
-            <view class="flex-fill">余额支付（余额￥0）</view>
-            <view class="font-size-sm">余额不足</view>
+            <view class="flex-fill"
+              >余额支付（余额{{
+                userInfo.balance > 0 ? userInfo.balance : 0
+              }}）</view
+            >
+            <view class="font-size-sm">{{
+              userInfo.balance > amount ? "" : "余额不足"
+            }}</view>
             <view
-              class="iconfont iconradio-button-off line-height-100 checkbox"
+              class="iconfont line-height-100 checkbox"
+              :class="[
+                payMode === 'balancePay'
+                  ? 'iconradio-button-on checked'
+                  : 'iconradio-button-off',
+              ]"
             ></view>
           </view>
         </list-cell>
-        <list-cell last>
+        <list-cell last @tap="setPayMode('wechatPay')">
           <view class="d-flex align-items-center justify-content-between w-100">
             <view
               class="iconfont iconwxpay line-height-100 payment-icon"
@@ -185,14 +198,19 @@
             ></view>
             <view class="flex-fill">微信支付</view>
             <view
-              class="iconfont iconradio-button-on line-height-100 checkbox checked"
+              class="iconfont line-height-100 checkbox"
+              :class="[
+                payMode === 'wechatPay'
+                  ? 'iconradio-button-on checked'
+                  : 'iconradio-button-off',
+              ]"
             ></view>
           </view>
         </list-cell>
       </view>
       <!-- 支付方式 end -->
       <!-- 备注 begin -->
-      <list-cell arrow last @click="goToRemark" style="margin-bottom: 25px;">
+      <list-cell arrow last @click="goToRemark" style="margin-bottom: 25px">
         <view
           class="d-flex flex-fill align-items-center justify-content-between overflow-hidden"
         >
@@ -268,105 +286,161 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
-import ListCell from '@/components/list-cell/list-cell.vue';
-import Modal from '@/components/modal/modal.vue';
+import ListCell from "@/components/list-cell/list-cell.vue";
+import Modal from "@/components/modal/modal.vue";
 // 订单数据，待优化，需改成数据拼接
-import orders from '@/api/orders';
+import orders from "@/api/orders";
 
 interface Data {
+  payMode: string;
   cart: unknown[];
   form: unknown;
   ensureAddressModalVisible: boolean;
+  amountCount: number;
 }
 
 export default Vue.extend({
   components: {
     ListCell,
-    Modal
+    Modal,
   },
   data() {
     return {
+      payMode: "", // 支付方式
       cart: [], // 点餐数据
       form: {
-				remark: '' // 备注
-			},
-			ensureAddressModalVisible: false // 外卖地址弹框
+        remark: "", // 备注
+      },
+      ensureAddressModalVisible: false, // 外卖地址弹框
+      amountCount: 0, // 实付金额
     } as Data;
   },
   computed: {
-    ...mapGetters(['orderType', 'address', 'store']),
+    ...mapGetters(["userInfo", "orderType", "address", "store", "coupon"]),
     // 实际付的钱
     total() {
-			return (this as any).cart.reduce((acc: any, cur: any) => acc + cur.number * cur.price, 0)
+      return (this as any).cart.reduce(
+        (acc: any, cur: any) => acc + cur.number * cur.price,
+        0
+      );
     },
     // 合计
-		amount() {
-			return (this as any).cart.reduce((acc: any, cur: any) => acc + cur.number * cur.price, 0)
-		}
+    amount() {
+      return (this as any).cart.reduce(
+        (acc: any, cur: any) => acc + cur.number * cur.price,
+        0
+      );
+    },
   },
   onLoad(option: any) {
     const { remark } = option;
     // 获取本地订单数据
-    (this as any).cart = JSON.parse(uni.getStorageSync('cart'));
+    (this as any).cart = JSON.parse(uni.getStorageSync("cart"));
     // 备注
-		remark && this.$set((this as any).form, 'remark', remark);
+    remark && this.$set((this as any).form, "remark", remark);
+  },
+  onShow() {
+    // 实付金额
+    (this as any).amountCount = (this as any).cart.reduce(
+      (acc: any, cur: any) => acc + cur.number * cur.price,
+      0
+    );
+    // 支付方式
+    if (this.userInfo.balance < (this as any).amountCount) {
+      (this as any).payMode = "wechatPay";
+    } else {
+      (this as any).payMode = "balancePay";
+    }
   },
   methods: {
-      ...mapMutations(['setOrder']),
-      // 填写备注
-			goToRemark(): void {
-				uni.navigateTo({
-					url: '/pages/remark/remark?remark=' + (this as any).form.remark
-				})
-      },
-      // 选择地址
-			chooseAddress(): void {
-				uni.navigateTo({
-					url: '/pages/address/address?is_choose=true&scene=pay'
-				})
-      },
-      // 修改外卖地址
-      changeTakeoutAddress(): void {
-        uni.navigateTo({
-					url: '/pages/address/address?is_choose=true&scene=pay'
-				})
-      },
-      // 选择奈雪券
-			goToPackages(): void {
-				uni.navigateTo({
-					url: '/pages/coupons/coupons'
-				})
-      },
-      // 选择礼品卡
-      goToGiftCard(): void {
-        uni.navigateTo({
-          url: "/pages/giftcard/giftcard?type=pay"
-        })
-      },
-      // 付款
-			submit(): void {
-				if(this.orderType === 'takeout') {
-					(this as any).ensureAddressModalVisible = true;
-				} else {
-					(this as any).pay();
-				}
-			},
-			pay(): void {
-				uni.showLoading({title: '加载中'})
-				//测试订单
-				let order = this.orderType == 'takein' ? orders[0] : orders[1]
-        order = Object.assign(order, {status: 1});
-        // 存储订单
-        (this as any).setOrder(order);
-        // 删除本地点餐数据
-        uni.removeStorageSync('cart');
-        // 跳转至订单
-				uni.reLaunch({
-					url: '/pages/take-foods/take-foods'
-				})
-				uni.hideLoading()
-			}
-		}
+    ...mapMutations(["setOrder"]),
+    // 填写备注
+    goToRemark(): void {
+      uni.navigateTo({
+        url: "/pages/remark/remark?remark=" + (this as any).form.remark,
+      });
+    },
+    // 选择地址
+    chooseAddress(): void {
+      uni.navigateTo({
+        url: "/pages/address/address?is_choose=true&scene=pay",
+      });
+    },
+    // 修改外卖地址
+    changeTakeoutAddress(): void {
+      uni.navigateTo({
+        url: "/pages/address/address?is_choose=true&scene=pay",
+      });
+    },
+    // 选择奈雪券
+    goToPackages(): void {
+      uni.navigateTo({
+        url: "/pages/coupons/coupons?scene=pay",
+      });
+    },
+    // 选择礼品卡
+    goToGiftCard(): void {
+      uni.navigateTo({
+        url: "/pages/giftcard/giftcard?type=pay",
+      });
+    },
+    // 支付方式
+    setPayMode(mode: string): boolean | undefined {
+      if (mode === "balancePay") {
+        // 余额不足，不可选择
+        if (this.userInfo.balance < (this as any).amountCount) {
+          return false;
+        }
+        (this as any).payMode = "balancePay";
+      } else {
+        (this as any).payMode = "wechatPay";
+      }
+    },
+    // 付款
+    submit(): void {
+      if (this.orderType === "takeout") {
+        (this as any).ensureAddressModalVisible = true;
+      } else {
+        (this as any).pay();
+      }
+    },
+    pay(): boolean | undefined {
+      // 微信支付时，跳转至充值
+      if ((this as any).payMode === "wechatPay") {
+        uni.showModal({
+          title: "温馨提示",
+          content: "暂时不支持微信支付，请前往充值",
+          confirmText: "去充值",
+          success(res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: '/pages/balance/balance'
+              });
+            }
+          },
+        });
+        return false;
+      } else {
+        uni.showLoading({
+          title: '加载中...'
+        });
+        setTimeout(() => {
+          //测试订单
+          let order = this.orderType == "takein" ? orders[0] : orders[1];
+          order = Object.assign(order, { status: 1 });
+          // 存储订单
+          (this as any).setOrder(order);
+          // 删除本地点餐数据
+          uni.removeStorageSync("cart");
+          // 跳转至订单
+          uni.reLaunch({
+            url: "/pages/take-foods/take-foods",
+          });
+          uni.hideLoading();
+        }, 1500);
+      }
+    },
+  },
 });
 </script>
 

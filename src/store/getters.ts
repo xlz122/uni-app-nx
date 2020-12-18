@@ -7,6 +7,7 @@ export interface Getters<T> {
 const getters: Getters<State> = {
   userInfo: state => state.userInfo,
   cardVoucher: state => state.cardVoucher,
+  coupon: state => state.coupon,
   isLogin: state => Object.keys((state as any).userInfo).length > 0 ? true : false, // 是否登录
   store: state => state.store,
   orderType: state => state.orderType,
