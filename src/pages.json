@@ -43,16 +43,16 @@
 			}
 		},
 		{
-			"path" : "pages/invite/invite",
-			"style" : {
+			"path": "pages/invite/invite",
+			"style": {
 				"navigationBarTitleText": "买茶送包",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/packages/index",
-			"style" : {
+			"path": "pages/packages/index",
+			"style": {
 				"navigationBarTitleText": "券包商品",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff",
@@ -60,8 +60,8 @@
 			}
 		},
 		{
-			"path" : "pages/packages/detail",
-			"style" : {
+			"path": "pages/packages/detail",
+			"style": {
 				"navigationBarTitleText": "购买劵包",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff",
@@ -69,24 +69,24 @@
 			}
 		},
 		{
-			"path" : "pages/address/address",
-			"style" : {
+			"path": "pages/address/address",
+			"style": {
 				"navigationBarTitleText": "我的地址",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/address/add",
-			"style" : {
+			"path": "pages/address/add",
+			"style": {
 				"navigationBarTitleText": "地址",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/orders/orders",
-			"style" : {
+			"path": "pages/orders/orders",
+			"style": {
 				"navigationBarTitleText": "历史订单",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff",
@@ -95,32 +95,32 @@
 			}
 		},
 		{
-			"path" : "pages/review/review",
-			"style" : {
+			"path": "pages/review/review",
+			"style": {
 				"navigationBarTitleText": "评价",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/orders/detail",
-			"style" : {
+			"path": "pages/orders/detail",
+			"style": {
 				"navigationBarTitleText": "订单详情",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/pay/pay",
-			"style" : {
+			"path": "pages/pay/pay",
+			"style": {
 				"navigationBarTitleText": "结算",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/remark/remark",
-			"style" : {
+			"path": "pages/remark/remark",
+			"style": {
 				"navigationBarTitleText": "奈雪の茶",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
@@ -151,23 +151,23 @@
 			}
 		},
 		{
-			"path" : "pages/integrals/integrals",
-			"style" : {
-				"navigationStyle":"custom",
+			"path": "pages/integrals/integrals",
+			"style": {
+				"navigationStyle": "custom",
 				"onReachBottomDistance": 50
 			}
 		},
 		{
-			"path" : "pages/integrals/detail",
-			"style" : {
+			"path": "pages/integrals/detail",
+			"style": {
 				"navigationBarTitleText": "兑换详情",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/integrals/flow",
-			"style" : {
+			"path": "pages/integrals/flow",
+			"style": {
 				"navigationBarTitleText": "积分明细",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
@@ -191,22 +191,22 @@
 			}
 		},
 		{
-			"path" : "pages/attendance/attendance",
-			"style" : {
-				"navigationStyle":"custom"
+			"path": "pages/attendance/attendance",
+			"style": {
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path" : "pages/services/services",
-			"style" : {
+			"path": "pages/services/services",
+			"style": {
 				"navigationBarTitleText": "更多服务",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"
 			}
 		},
 		{
-			"path" : "pages/services/help-center",
-			"style" : {
+			"path": "pages/services/help-center",
+			"style": {
 				"navigationBarTitleText": "帮助中心",
 				"navigationBarTextStyle": "black",
 				"navigationBarBackgroundColor": "#ffffff"

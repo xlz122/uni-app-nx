@@ -1,5 +1,9 @@
 /**
  * @desc node createPage.js 文件夹路径（a 或者 a/b） 文件名
+ * @examples node createPage.js hello 在src创建hello.ts hello.scss
+ * @examples node createPage.js hello world 在src创建hello文件夹，world.ts hello.scss文件
+ * @examples node createPage.js hello/world 在src创建hello文件夹，world子文件夹
+ * @examples node createPage.js hello/world a 在src创建hello文件夹，world子文件夹 a.ts a.scss文件
 */
 const fs = require('fs')
 
