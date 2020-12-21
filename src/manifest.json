@@ -71,7 +71,7 @@
         }
     },
     "mp-alipay" : {
-        "usingComponents" : true
+        "usingComponents" : true // 是否启用自定义组件模式
     },
     "mp-baidu" : {
         "usingComponents" : true

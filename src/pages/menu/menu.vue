@@ -153,7 +153,7 @@
                             v-show="goodCartNum(good.id)"
                             plain
                             class="btn reduce_btn"
-                            size="mini"
+                            size="min"
                             hover-class="none"
                             @tap="handleReduceFromCart(item, good)"
                           >

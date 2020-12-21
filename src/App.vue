@@ -21,6 +21,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+// 支付宝小程序，高度100%问题
+#app {
+  height: 100%;
+}
 /*每个页面公共css */
 @import "~@/static/style/app.scss";
 </style>
