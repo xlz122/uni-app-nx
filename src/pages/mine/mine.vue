@@ -20,6 +20,7 @@
               :src="
                 isLogin ? userInfo.avatar : '/static/images/mine/default.png'
               "
+              @tap="showActionSheet"
             ></image>
             <view class="badge" v-if="isLogin">
               <image src="/static/images/mine/level.png"></image>
@@ -214,7 +215,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 interface Data {
   newIcon: string;
@@ -225,7 +226,17 @@ export default Vue.extend({
     return {
       newIcon:
         "https://img-shop.qmimg.cn/s16/images/2020/05/12/ffb0613dded704b6.png",
+      imageList: [],
     } as Data;
+  },
+  onShow() {
+    // 头像
+    (this as any).imageList = [];
+    if (this.isLogin) {
+      (this as any).imageList.push(this.userInfo.avatar);
+    } else {
+      (this as any).imageList.push("/static/images/mine/default.png");
+    }
   },
   computed: {
     ...mapGetters(["isLogin", "userInfo"]),
@@ -237,10 +248,89 @@ export default Vue.extend({
     },
   },
   methods: {
+    ...mapMutations(["setAvatar"]),
+    // 头像更换
+    showActionSheet(): boolean | undefined {
+      if (!this.isLogin) {
+        uni.navigateTo({
+          url: "/pages/login/login",
+        });
+        return false;
+      }
+      uni.showActionSheet({
+        itemList: ["查看头像", "从相册选择图片", "拍照"],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            // 查看头像
+            (this as any).previewImage();
+          } else if (res.tapIndex === 1) {
+            // 从相册选择图片
+            (this as any).chooseImage();
+          } else if (res.tapIndex === 2) {
+            // 拍照
+            (this as any).chooseShot();
+          }
+        },
+        fail: (err) => {
+          console.log(err.errMsg);
+        },
+      });
+    },
+    // 查看头像
+    previewImage() {
+      uni.previewImage({
+        current: (this as any).imageList[0], // 当前展示图片
+        urls: (this as any).imageList, // 展示图片数组
+      });
+    },
+    // 从相册选择图片
+    chooseImage() {
+      uni.chooseImage({
+        count: 1, // 最多可以选择的图片张数，默认9
+        sizeType: ["original", "compressed"], // original 原图，compressed 压缩图，默认二者都有
+        sourceType: ["album", "camera"], // album 从相册选图，camera 使用相机，默认二者都有。如需直接开相机或直接选相册，请只使用一个选项
+        success: (res) => {
+          // 返回图片的本地文件路径列表
+          const tempFilePaths = res.tempFilePaths;
+          // 保存文件到本地
+          uni.saveFile({
+            tempFilePath: tempFilePaths[0],
+            success: (res) => {
+              const savedFilePath = res.savedFilePath;
+              // 替换头像路径
+              (this as any).imageList[0] = savedFilePath;
+              (this as any).setAvatar(savedFilePath);
+            }
+          });
+        },
+      });
+    },
+    // 拍照
+    chooseShot() {
+      uni.chooseImage({
+        count: 1, // 最多可以选择的图片张数，默认9
+        sizeType: ["original", "compressed"], // original 原图，compressed 压缩图，默认二者都有
+        sourceType: ["camera"], // album 从相册选图，camera 使用相机，默认二者都有。如需直接开相机或直接选相册，请只使用一个选项
+        success: (res) => {
+          // 返回图片的本地文件路径列表
+          const tempFilePaths = res.tempFilePaths;
+          // 保存文件到本地
+          uni.saveFile({
+            tempFilePath: tempFilePaths[0],
+            success: (res) => {
+              const savedFilePath = res.savedFilePath;
+              // 替换头像路径
+              (this as any).imageList[0] = savedFilePath;
+              (this as any).setAvatar(savedFilePath);
+            }
+          });
+        },
+      });
+    },
     // 立即加入
     login(): void {
       uni.navigateTo({
-        url: '/pages/login/login'
+        url: "/pages/login/login",
       });
     },
     // 会员码
@@ -250,7 +340,7 @@ export default Vue.extend({
         return false;
       }
       uni.navigateTo({
-        url: '/pages/mine/member-code'
+        url: "/pages/mine/member-code",
       });
     },
     // 用户信息/我的资料
@@ -260,15 +350,15 @@ export default Vue.extend({
         return false;
       }
       uni.navigateTo({
-        url: '/pages/mine/userinfo'
+        url: "/pages/mine/userinfo",
       });
     },
     // 会员权益
-    rightsAndInterests(): void{
+    rightsAndInterests(): void {
       uni.showToast({
-        title: '会员权益',
-        icon: 'none'
-      })
+        title: "会员权益",
+        icon: "none",
+      });
     },
     // 奈雪券
     coupons(): boolean | undefined {
@@ -277,8 +367,8 @@ export default Vue.extend({
         return false;
       }
       uni.navigateTo({
-        url: '/pages/coupons/coupons'
-      })
+        url: "/pages/coupons/coupons",
+      });
     },
     // 积分商城
     integrals(): boolean | undefined {
@@ -286,9 +376,9 @@ export default Vue.extend({
         (this as any).login();
         return false;
       }
-			uni.navigateTo({
-				url: '/pages/integrals/integrals'
-			})
+      uni.navigateTo({
+        url: "/pages/integrals/integrals",
+      });
     },
     // 余额
     balance(): boolean | undefined {
@@ -297,18 +387,18 @@ export default Vue.extend({
         return false;
       }
       uni.navigateTo({
-			 	url: '/pages/balance/balance'
-			})
-		},
-		// 礼品卡
-		giftCards(): boolean | undefined {
+        url: "/pages/balance/balance",
+      });
+    },
+    // 礼品卡
+    giftCards(): boolean | undefined {
       if (!this.isLogin) {
         (this as any).login();
         return false;
       }
       uni.navigateTo({
-        url: '/pages/giftcard/giftcard'
-      })
+        url: "/pages/giftcard/giftcard",
+      });
     },
     // 积分签到
     attendance(): boolean | undefined {
@@ -317,29 +407,29 @@ export default Vue.extend({
         return false;
       }
       uni.navigateTo({
-        url: '/pages/attendance/attendance'
-      })
+        url: "/pages/attendance/attendance",
+      });
     },
     // 送她心愿
     wish(): void {
       uni.showToast({
-        title: '送她心愿',
-        icon: 'none'
-      })
+        title: "送她心愿",
+        icon: "none",
+      });
     },
     // 奈雪商城
     shoppingMall(): void {
       uni.showToast({
-        title: '奈雪商城',
-        icon: 'none'
-      })
+        title: "奈雪商城",
+        icon: "none",
+      });
     },
     // 联系客服
-    service(): void{
+    service(): void {
       uni.showToast({
-        title: '联系客服',
-        icon: 'none'
-      })
+        title: "联系客服",
+        icon: "none",
+      });
     },
     // 我的订单
     orders(): boolean | undefined {
@@ -348,29 +438,29 @@ export default Vue.extend({
         return false;
       }
       uni.navigateTo({
-        url: '/pages/orders/orders'
-      })
+        url: "/pages/orders/orders",
+      });
     },
     // 收获地址
-    addresses(): boolean | undefined  {
+    addresses(): boolean | undefined {
       if (!this.isLogin) {
         (this as any).login();
         return false;
       }
       uni.navigateTo({
-        url: '/pages/address/address'
-      })
+        url: "/pages/address/address",
+      });
     },
     // 更多服务
     services(): boolean | undefined {
-      if(!this.isLogin) {
-				this.login();
+      if (!this.isLogin) {
+        this.login();
         return false;
-			}
-			uni.navigateTo({
-				url: '/pages/services/services'
-			})
-    }
+      }
+      uni.navigateTo({
+        url: "/pages/services/services",
+      });
+    },
   },
 });
 </script>

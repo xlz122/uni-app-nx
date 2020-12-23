@@ -13,6 +13,10 @@ const mutations: Mutations<State> = {
   setUserInfo(state, userInfo: unknown) {
     state.userInfo = userInfo;
   },
+  // 更换头像
+  setAvatar(state, avatar: string) {
+    (state.userInfo as any).avatar = avatar;
+  },
   // 是否签到
   setIsAttendance(state, isAttendance: boolean) {
     (state.userInfo as any).isAttendance = isAttendance;
