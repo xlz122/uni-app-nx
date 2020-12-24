@@ -27,6 +27,19 @@
         微信一键登录
       </button>
       <!-- #endif -->
+      <!-- #ifdef MP-ALIPAY -->
+      <button
+        type="primary"
+        size="default"
+        class="login-btn"
+        @getAuthorize="onGetAuthorize"
+        @error="onAuthError" 
+        scope="userInfo"
+        open-type="getAuthorize"
+      >
+        支付宝一键登录
+      </button>
+      <!-- #endif -->
       <view
         class="d-flex flex-column justify-content-evenly align-items-center text-center"
         style="height: 30vh"
@@ -86,7 +99,7 @@ export default Vue.extend({
       this.setUserInfo(Member);
       // 关闭当前页面，返回上一页
       uni.navigateBack({
-        delta: 1
+        delta: 1,
       });
     },
     // 微信登录
@@ -102,7 +115,7 @@ export default Vue.extend({
         //没有授权登录就用默认的用户信息
         this.setUserInfo(Member);
         uni.navigateBack({
-          delta: 1
+          delta: 1,
         });
       } else {
         const {
@@ -123,11 +136,50 @@ export default Vue.extend({
         });
         this.setUserInfo(member);
         uni.navigateBack({
-          delta: 1
+          delta: 1,
         });
       }
     },
-  },
+    // 支付宝 - 授权登录
+    onGetAuthorize() {
+      (my as any).getOpenUserInfo({
+        fail: (res: any) => {
+          console.log(res);
+        },
+        success: (res: any) => {
+          const userInfo = JSON.parse(res.response).response; // 以下方的报文格式解析两层 response
+          const {
+            avatar,
+            city,
+            countryCode: country,
+            gender,
+            nickName: nickname,
+            province,
+          } = userInfo;
+          const member = Object.assign(Member, {
+            avatar,
+            city,
+            country,
+            gender,
+            nickname: nickname || "未设置昵称",
+            province,
+          });
+          this.setUserInfo(member);
+          uni.navigateBack({
+            delta: 1,
+          });
+        },
+      });
+    },
+    // 支付宝 - 取消授权
+    onAuthError() {
+      uni.showModal({
+        title: "提示",
+        content: "您取消了授权登录，请重新授权",
+        showCancel: false,
+      });
+    }
+  }
 });
 </script>
 
