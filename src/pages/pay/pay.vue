@@ -54,9 +54,9 @@
               <view class="title flex-fill">联系电话</view>
               <view class="time">
                 <input
+                  v-model="form.mobilePhone"
                   class="text-right"
                   placeholder="请输入手机号码"
-                  value="18666600000"
                 />
               </view>
               <view class="contact-tip font-size-sm">自动填写</view>
@@ -86,7 +86,7 @@
       <!-- 购物车列表 begin -->
       <view class="section-2">
         <view class="cart d-flex flex-column">
-          <list-cell last v-for="(item, index) in cart" :key="index">
+          <list-cell last v-for="(item, index) in cartData" :key="index">
             <view class="w-100 d-flex flex-column">
               <view class="d-flex align-items-center mb-10">
                 <view class="name-and-props overflow-hidden">
@@ -293,7 +293,6 @@ import orders from "@/api/orders";
 
 interface Data {
   payMode: string;
-  cart: unknown[];
   form: unknown;
   ensureAddressModalVisible: boolean;
   amountCount: number;
@@ -307,8 +306,8 @@ export default Vue.extend({
   data() {
     return {
       payMode: "", // 支付方式
-      cart: [], // 点餐数据
       form: {
+        mobilePhone: "", // 手机号
         remark: "", // 备注
       },
       ensureAddressModalVisible: false, // 外卖地址弹框
@@ -316,17 +315,17 @@ export default Vue.extend({
     } as Data;
   },
   computed: {
-    ...mapGetters(["userInfo", "orderType", "address", "store", "coupon"]),
+    ...mapGetters(["userInfo", "orderType", "address", "store", "coupon", "cartData"]),
     // 实际付的钱
     total() {
-      return (this as any).cart.reduce(
+      return (this as any).cartData.reduce(
         (acc: any, cur: any) => acc + cur.number * cur.price,
         0
       );
     },
     // 合计
     amount() {
-      return (this as any).cart.reduce(
+      return (this as any).cartData.reduce(
         (acc: any, cur: any) => acc + cur.number * cur.price,
         0
       );
@@ -334,14 +333,12 @@ export default Vue.extend({
   },
   onLoad(option: any) {
     const { remark } = option;
-    // 获取本地订单数据
-    (this as any).cart = JSON.parse(uni.getStorageSync("cart"));
     // 备注
     remark && this.$set((this as any).form, "remark", remark);
   },
   onShow() {
     // 实付金额
-    (this as any).amountCount = (this as any).cart.reduce(
+    (this as any).amountCount = (this as any).cartData.reduce(
       (acc: any, cur: any) => acc + cur.number * cur.price,
       0
     );
@@ -353,7 +350,11 @@ export default Vue.extend({
     }
   },
   methods: {
-    ...mapMutations(["setOrder"]),
+    ...mapMutations(["setOrder", "setCartData"]),
+    // 手机号 - 自动填写
+    fillInPhone(): void {
+      (this as any).form.mobilePhone = (this as any).userInfo.mobilePhone;
+    },
     // 填写备注
     goToRemark(): void {
       uni.navigateTo({
@@ -397,7 +398,15 @@ export default Vue.extend({
       }
     },
     // 付款
-    submit(): void {
+    submit(): boolean | undefined {
+      const reg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+      if ((this as any).form.mobilePhone && !reg.test((this as any).form.mobilePhone)) {
+        uni.showToast({
+          title: "请输入正确的手机号",
+          icon: "none"
+        });
+        return false;
+      }
       if (this.orderType === "takeout") {
         (this as any).ensureAddressModalVisible = true;
       } else {
@@ -430,8 +439,8 @@ export default Vue.extend({
           order = Object.assign(order, { status: 1 });
           // 存储订单
           (this as any).setOrder(order);
-          // 删除本地点餐数据
-          uni.removeStorageSync("cart");
+          // 删除点餐数据
+          (this as any).setCartData([]);
           // 跳转至订单
           uni.reLaunch({
             url: "/pages/take-foods/take-foods",

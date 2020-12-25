@@ -1,7 +1,7 @@
 // 登录个人信息
 export default {
   "storeId": null,
-	"mobilePhone": "18666600000",
+	"mobilePhone": "18684932345",
 	"nickname": "xlz",
 	"avatar": "/static/images/mine/default.png",
 	"country": "",

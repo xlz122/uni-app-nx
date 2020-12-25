@@ -9,6 +9,13 @@ interface Mutation<T> {
 }
 
 const mutations: Mutations<State> = {
+  // 购物车数据
+  setCartData(state, cartData: string) {
+    state.cartData = cartData;
+  },
+  setStore(state, store: unknown) {
+    state.store = store;
+  },
   // 用户信息
   setUserInfo(state, userInfo: unknown) {
     state.userInfo = userInfo;
@@ -40,9 +47,6 @@ const mutations: Mutations<State> = {
   // 单张卡券
   setCoupon(state, coupon: unknown[]) {
     state.coupon = coupon;
-  },
-  setStore(state, store: unknown) {
-    state.store = store;
   },
   // 订单类型
   setOrderType(state, orderType: string) {

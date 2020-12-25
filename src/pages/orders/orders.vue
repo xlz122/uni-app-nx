@@ -82,9 +82,14 @@ export default Vue.extend({
       uni.navigateTo({
         url: '/pages/login/login'
       })
-      return false;
+    } else {
+      await (this as any).getOrders(false);
     }
-    await (this as any).getOrders(false);
+  },
+  async onShow() {
+    if (this.isLogin) {
+      await (this as any).getOrders(false);
+    }
   },
   // 上拉加载
   async onReachBottom() {

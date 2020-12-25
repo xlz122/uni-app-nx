@@ -5,11 +5,12 @@ export interface Getters<T> {
 }
 
 const getters: Getters<State> = {
+  cartData: state => state.cartData,
+  store: state => state.store,
   userInfo: state => state.userInfo,
+  isLogin: state => Object.keys((state as any).userInfo).length > 0 ? true : false, // 是否登录
   cardVoucher: state => state.cardVoucher,
   coupon: state => state.coupon,
-  isLogin: state => Object.keys((state as any).userInfo).length > 0 ? true : false, // 是否登录
-  store: state => state.store,
   orderType: state => state.orderType,
   address: state => state.address,
   addresses: state => state.addresses,

@@ -270,10 +270,7 @@ export default Vue.extend({
             // 拍照
             (this as any).chooseShot();
           }
-        },
-        fail: (err) => {
-          console.log(err.errMsg);
-        },
+        }
       });
     },
     // 查看头像
