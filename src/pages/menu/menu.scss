@@ -234,6 +234,7 @@ page {
     .wrapper {
       width: 100%;
       height: 100%;
+      .list {}
 
       .menu {
         display: flex;
@@ -245,7 +246,7 @@ page {
         position: relative;
 
         &:nth-last-child(1) {
-          margin-bottom: 130rpx;
+          margin-bottom: 285rpx;
         }
 
         &.current {
@@ -279,7 +280,6 @@ page {
     .wrapper {
       width: 100%;
       height: 100%;
-      padding: 20rpx;
 
       .ads {
         height: calc(300 / 550 * 510rpx);
@@ -294,10 +294,13 @@ page {
       .list {
         width: 100%;
         font-size: $font-size-base;
-        padding-bottom: 130rpx;
 
         .category {
           width: 100%;
+
+          &:nth-last-child(1) {
+            margin-bottom: 285rpx;
+          }
 
           .title {
             padding: 30rpx 0;
