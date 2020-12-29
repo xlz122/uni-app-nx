@@ -157,11 +157,12 @@ export default Vue.extend({
       
       // 只进行请求一次
       const res = uni.getStorageInfoSync();
-      if (!res.keys.includes("orderData")) {
+      if (!res.keys.includes("orders")) {
         let orderData = await (this as any).$api("orders") || [];
         orderData = [...orderData, ...JSON.parse(JSON.stringify((this as any).orderData))];
         (this as any).setOrderData(orderData);
         uni.setStorageSync("orderData", orderData);
+        uni.setStorageSync("orders", "orders");
       } 
 
       orders = (this as any).orderData;
