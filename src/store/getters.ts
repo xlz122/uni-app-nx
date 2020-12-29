@@ -14,7 +14,8 @@ const getters: Getters<State> = {
   orderType: state => state.orderType,
   address: state => state.address,
   addresses: state => state.addresses,
-  order: state => state.order
+  order: state => state.order,
+  orderData: state => state.orderData
 }
 
 export default getters;

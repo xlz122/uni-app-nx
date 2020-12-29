@@ -3,7 +3,7 @@ export default {
   "storeId": null,
 	"mobilePhone": "18684932345",
 	"nickname": "xlz",
-	"avatar": "/static/images/mine/default.png",
+	"avatar": "/static/images/mine/default.jpg",
 	"country": "",
 	"cardName": "V2",
 	"memberLevel": 2,

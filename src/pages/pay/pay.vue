@@ -59,7 +59,9 @@
                   placeholder="请输入手机号码"
                 />
               </view>
-              <view class="contact-tip font-size-sm">自动填写</view>
+              <view class="contact-tip font-size-sm" @tap="fillInPhone"
+                >自动填写</view
+              >
             </view>
           </list-cell>
         </template>
@@ -102,7 +104,7 @@
                 </view>
               </view>
               <view class="text-truncate font-size-base text-color-assist">
-                {{ item.props_text || '' }}
+                {{ item.props_text || "" }}
               </view>
             </view>
           </list-cell>
@@ -288,8 +290,6 @@ import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
 import ListCell from "@/components/list-cell/list-cell.vue";
 import Modal from "@/components/modal/modal.vue";
-// 订单数据，待优化，需改成数据拼接
-import orders from "@/api/orders";
 
 interface Data {
   payMode: string;
@@ -305,7 +305,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      payMode: "", // 支付方式
+      payMode: "balancePay", // 支付方式
       form: {
         mobilePhone: "", // 手机号
         remark: "", // 备注
@@ -315,7 +315,15 @@ export default Vue.extend({
     } as Data;
   },
   computed: {
-    ...mapGetters(["userInfo", "orderType", "address", "store", "coupon", "cartData"]),
+    ...mapGetters([
+      "userInfo",
+      "orderType",
+      "address",
+      "store",
+      "coupon",
+      "cartData",
+      "orderData"
+    ]),
     // 实际付的钱
     total() {
       return (this as any).cartData.reduce(
@@ -332,8 +340,10 @@ export default Vue.extend({
     },
   },
   onLoad(option: any) {
-    const { remark } = option;
+    // 手机号
+    (this as any).form.mobilePhone = (this as any).userInfo.mobilePhone;
     // 备注
+    const { remark } = option;
     remark && this.$set((this as any).form, "remark", remark);
   },
   onShow() {
@@ -342,15 +352,9 @@ export default Vue.extend({
       (acc: any, cur: any) => acc + cur.number * cur.price,
       0
     );
-    // 支付方式
-    if (this.userInfo.balance < (this as any).amountCount) {
-      (this as any).payMode = "wechatPay";
-    } else {
-      (this as any).payMode = "balancePay";
-    }
   },
   methods: {
-    ...mapMutations(["setOrder", "setCartData"]),
+    ...mapMutations(["setSubtractBalance", "setOrder", "setOrderData", "setCartData"]),
     // 手机号 - 自动填写
     fillInPhone(): void {
       (this as any).form.mobilePhone = (this as any).userInfo.mobilePhone;
@@ -386,12 +390,8 @@ export default Vue.extend({
       });
     },
     // 支付方式
-    setPayMode(mode: string): boolean | undefined {
+    setPayMode(mode: string): void {
       if (mode === "balancePay") {
-        // 余额不足，不可选择
-        if (this.userInfo.balance < (this as any).amountCount) {
-          return false;
-        }
         (this as any).payMode = "balancePay";
       } else {
         (this as any).payMode = "wechatPay";
@@ -399,55 +399,178 @@ export default Vue.extend({
     },
     // 付款
     submit(): boolean | undefined {
+      // 验证手机号
       const reg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
-      if ((this as any).form.mobilePhone && !reg.test((this as any).form.mobilePhone)) {
+      if (
+        (this as any).form.mobilePhone &&
+        !reg.test((this as any).form.mobilePhone)
+      ) {
         uni.showToast({
           title: "请输入正确的手机号",
-          icon: "none"
+          icon: "none",
         });
         return false;
       }
+      // 不可使用微信支付
+      if ((this as any).payMode === "wechatPay") {
+        uni.showModal({
+          title: "温馨提示",
+          content: "暂时不支持微信支付，请使用余额",
+          showCancel: false,
+        });
+        return false;
+      }
+      // 余额不足，跳转至充值
+      if (this.userInfo.balance < (this as any).amountCount) {
+        uni.showModal({
+          title: "温馨提示",
+          content: "余额不足，请前往充值",
+          confirmText: "去充值",
+          success(res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: "/pages/balance/balance",
+              });
+            }
+          },
+        });
+        return false;
+      }
+      // 堂食/外卖
       if (this.orderType === "takeout") {
         (this as any).ensureAddressModalVisible = true;
       } else {
         (this as any).pay();
       }
     },
-    pay(): boolean | undefined {
-      // 微信支付时，跳转至充值
-      if ((this as any).payMode === "wechatPay") {
-        uni.showModal({
-          title: "温馨提示",
-          content: "暂时不支持微信支付，请前往充值",
-          confirmText: "去充值",
-          success(res) {
-            if (res.confirm) {
-              uni.navigateTo({
-                url: '/pages/balance/balance'
-              });
-            }
-          },
+    pay(): void {
+      uni.showLoading({
+        title: "加载中...",
+      });
+      setTimeout(() => {
+        // 支付成功
+        (this as any).setSubtractBalance(Number((this as any).amountCount));
+        // 获取订单数据
+        const order = (this as any).handleOrderData();
+        // 存储订单
+        (this as any).setOrder(order);
+        // 添加到订单数据
+        const orderData = JSON.parse(JSON.stringify((this as any).orderData));
+        orderData.unshift(order);
+        (this as any).setOrderData(orderData);
+        // 删除点餐数据
+        (this as any).setCartData([]);
+        // 跳转至订单
+        uni.reLaunch({
+          url: "/pages/take-foods/take-foods",
         });
-        return false;
-      } else {
-        uni.showLoading({
-          title: '加载中...'
-        });
-        setTimeout(() => {
-          //测试订单
-          let order = this.orderType == "takein" ? orders[0] : orders[1];
-          order = Object.assign(order, { status: 1 });
-          // 存储订单
-          (this as any).setOrder(order);
-          // 删除点餐数据
-          (this as any).setCartData([]);
-          // 跳转至订单
-          uni.reLaunch({
-            url: "/pages/take-foods/take-foods",
-          });
-          uni.hideLoading();
-        }, 1500);
-      }
+        uni.hideLoading();
+      }, 1500);
+    },
+    // 订单数据
+    handleOrderData(): unknown {
+      // 点餐数据
+      const goods = JSON.parse(JSON.stringify((this as any).cartData));
+      goods.forEach((item: any) => {
+        item.amount = (this as any).amountCount;
+        item.originAmount = (this as any).amountCount;
+      });
+
+      // 取餐号
+      const str = new Date().getTime().toString();
+      const sort_num = str.substring(str.length - 4);
+      // 订单号
+      const order_no = `ABCDEFGHIJKLMN${str.substring(0, 4)}`;
+
+      return {
+        amount: (this as any).amountCount, // 实付金额
+        completed_at: 1588937139,
+        completed_time: (this as any).formatDate(), // 下单时间
+        coupon_amount: 0,
+        coupon_name: "",
+        created_at: 1608275942,
+        discount: [],
+        goods,
+        goods_num: 2,
+        id: 1,
+        invoice_status: 1,
+        mobile: (this as any).form.mobilePhone, // 手机号
+        multi_store: (this as any).store.name, // 店铺名
+        order_no, // 订单号
+        pay_mode:
+          (this as any).payMode === "wechatPay" ? "微信支付" : "余额支付",
+        pay_user_name: (this as any).userInfo.nickname, // 昵称
+        payed_at: 1588936805,
+        postscript: (this as any).orderType == "takein" ? "堂食" : "打包",
+        productioned_time: (this as any).formatDate({ date: new Date().getTime() + 750000 }), // 制作完成时间
+        receive_at: 0,
+        remark: "",
+        send_status: 0,
+        sended_time: 0,
+        sort_num, // 取餐号
+        status: 1, // 制作进度
+        status_text: "制作中",
+        store: {
+          address:
+            "广东省深圳市宝安区深圳市宝安区福海街道宝安大道6259号 L1 层55/56号商铺",
+          longitude: "113.804601",
+          latitude: "22.678654",
+          mobile: "075523224859",
+          name: (this as any).store.name, // 店铺名
+        },
+        total_amount: "50.00",
+        typeCate: 1,
+        updated_at: 1588937139,
+        user_name: (this as any).userInfo.nickname,
+      };
+    },
+    /**
+     * @desc 格式化日期字符串
+     * @param { String } - [date = new Date()] 日期字符串：2020-01-14 13:43:23
+     * @param { String } - [formatStr = 'yyyy-MM-dd HH:mm:ss'] 日期格式
+     * @returns { String } 格式化后的日期字符串
+     */
+    formatDate(params: { date: any; formatStr: string }) {
+      let defalutParams = {
+        date: new Date(),
+        formatStr: "yyyy-MM-dd HH:mm:ss",
+      };
+      params = { ...defalutParams, ...params };
+      let date = params.date;
+      let formatStr = params.formatStr;
+      // 传入日期字符串 - 转成时间戳 - 转成标准时间
+      let timeStamp = new Date(date).getTime();
+      date = new Date(timeStamp);
+      formatStr = formatStr.replace(
+        new RegExp("yyyy"),
+        `${date.getFullYear()}`
+      );
+      const month = date.getMonth() + 1;
+      formatStr = formatStr.replace(
+        new RegExp("MM"),
+        `${month > 9 ? month : "0" + month}`
+      );
+      const day = date.getDate();
+      formatStr = formatStr.replace(
+        new RegExp("dd"),
+        `${day > 9 ? day : "0" + day}`
+      );
+      const hour = date.getHours();
+      formatStr = formatStr.replace(
+        new RegExp("HH"),
+        `${hour > 9 ? hour : "0" + hour}`
+      );
+      const min = date.getMinutes();
+      formatStr = formatStr.replace(
+        new RegExp("mm"),
+        `${min > 9 ? min : "0" + min}`
+      );
+      const sec = date.getSeconds();
+      formatStr = formatStr.replace(
+        new RegExp("ss"),
+        `${sec > 9 ? sec : "0" + sec}`
+      );
+      return formatStr;
     },
   },
 });

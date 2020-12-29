@@ -121,7 +121,7 @@
 							<view class="w-100 d-flex flex-column">
 								<view class="pay-cell">
 									<view>下单时间</view>
-									<view class="font-weight-bold">{{ $util.formatDateTime(order.created_at) }}</view>
+									<view class="font-weight-bold">{{ order.completed_time }}</view>
 								</view>
 								<view class="pay-cell">
 									<view>下单门店</view>

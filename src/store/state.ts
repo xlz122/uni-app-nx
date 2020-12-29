@@ -10,6 +10,7 @@ export interface State {
   address: unknown;
   addresses: unknown;
   order: unknown;
+  orderData: unknown;
 }
 
 const state: State = {
@@ -21,7 +22,8 @@ const state: State = {
   orderType: 'takein', // 订单类型
   address: {}, // 点餐页面展示地址
   addresses: addresses, // 收获地址
-  order: {} // 订单数据
+  order: {}, // 单个订单数据
+  orderData: [] // 所有订单数据
 };
 
 export default state;

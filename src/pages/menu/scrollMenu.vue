@@ -377,6 +377,7 @@ export default Vue.extend({
           price: good.price,
           number: num,
           image: good.images,
+          unit: good.unit,
           use_property: good.use_property,
           props_text: good.props_text,
           props: good.props,

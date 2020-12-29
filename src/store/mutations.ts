@@ -56,6 +56,10 @@ const mutations: Mutations<State> = {
   setOrder(state, order: number) {
     state.order = order;
   },
+  // 订单添加
+  setOrderData(state, orderData: unknown) {
+    state.orderData = orderData;
+  },
   // 点餐页面地址
   setAddress(state, address: unknown) {
     state.address = address;

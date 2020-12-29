@@ -18,7 +18,7 @@
           <view class="avatar">
             <image
               :src="
-                isLogin ? userInfo.avatar : '/static/images/mine/default.png'
+                isLogin ? userInfo.avatar : '/static/images/mine/default.jpg'
               "
               @tap="showActionSheet"
             ></image>
