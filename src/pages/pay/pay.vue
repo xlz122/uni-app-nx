@@ -470,18 +470,24 @@ export default Vue.extend({
     },
     // 订单数据
     handleOrderData(): unknown {
+      const str = new Date().getTime().toString();
+
+      // 订单号
+      const order_no = `ABCDEFGHIJKLMN${str.substring(0, 4)}`;
+
+      // 取餐号
+      const sort_num = str.substring(str.length - 4);
+
+      // 商品数量
+      let goods_num = 0;
+
       // 点餐数据
       const goods = JSON.parse(JSON.stringify((this as any).cartData));
       goods.forEach((item: any) => {
         item.amount = (this as any).amountCount;
         item.originAmount = (this as any).amountCount;
+        goods_num++;
       });
-
-      // 取餐号
-      const str = new Date().getTime().toString();
-      const sort_num = str.substring(str.length - 4);
-      // 订单号
-      const order_no = `ABCDEFGHIJKLMN${str.substring(0, 4)}`;
 
       return {
         amount: (this as any).amountCount, // 实付金额
@@ -492,7 +498,7 @@ export default Vue.extend({
         created_at: 1608275942,
         discount: [],
         goods,
-        goods_num: 2,
+        goods_num,
         id: 1,
         invoice_status: 1,
         mobile: (this as any).form.mobilePhone, // 手机号
