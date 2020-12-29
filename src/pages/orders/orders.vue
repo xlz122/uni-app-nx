@@ -42,7 +42,7 @@
               style="margin-bottom: 30rpx"
             >
               <view class="font-size-sm text-color-assist">
-                {{ $util.formatDateTime(item.created_at) }}
+                {{ item.completed_time }}
               </view>
               <view
                 class="d-flex font-size-sm text-color-base align-items-center"
