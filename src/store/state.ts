@@ -23,7 +23,7 @@ const state: State = {
   address: {}, // 点餐页面展示地址
   addresses: addresses, // 收获地址
   order: {}, // 单个订单数据
-  orderData: [] // 所有订单数据
+  orderData: uni.getStorageSync("orderData") || [] // 所有订单数据
 };
 
 export default state;

@@ -458,6 +458,7 @@ export default Vue.extend({
         const orderData = JSON.parse(JSON.stringify((this as any).orderData));
         orderData.unshift(order);
         (this as any).setOrderData(orderData);
+        uni.setStorageSync("orderData", orderData);
         // 删除点餐数据
         (this as any).setCartData([]);
         // 跳转至订单

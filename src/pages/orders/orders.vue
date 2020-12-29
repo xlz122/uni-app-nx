@@ -183,6 +183,7 @@ export default Vue.extend({
       }
 
       setTimeout(() => {
+        uni.stopPullDownRefresh();
         uni.hideLoading();
       }, 500);
     },
