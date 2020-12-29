@@ -159,7 +159,7 @@ export default Vue.extend({
       const res = uni.getStorageInfoSync();
       if (!res.keys.includes("orders")) {
         let orderData = await (this as any).$api("orders") || [];
-        orderData = [...orderData, ...JSON.parse(JSON.stringify((this as any).orderData))];
+        orderData = [...JSON.parse(JSON.stringify((this as any).orderData)), ...orderData];
         (this as any).setOrderData(orderData);
         uni.setStorageSync("orderData", orderData);
         uni.setStorageSync("orders", "orders");
