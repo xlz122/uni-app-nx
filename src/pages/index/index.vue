@@ -2,14 +2,13 @@
   <view class="container">
     <view class="banner">
       <image
-        src="https://img-shop.qmimg.cn/s23107/2020/04/26/3eb7808bf105262604.jpg"
-        mode=""
         class="bg"
+        src="https://img-shop.qmimg.cn/s23107/2020/04/26/3eb7808bf105262604.jpg"
       ></image>
       <view class="intro">
-        <view class="greet"
-          >您好，{{ isLogin ? userInfo.nickname : "游客" }}</view
-        >
+        <view class="greet">
+          您好，{{ isLogin ? userInfo.nickname : "游客" }}
+        </view>
         <view class="note">一杯奶茶，一口软欧包，在奈雪遇见两种美好</view>
       </view>
     </view>
@@ -116,18 +115,6 @@ export default Vue.extend({
     ...mapGetters(["isLogin", "userInfo"]),
   },
   methods: {
-    // 是否登录
-    handleIsLogin(): Promise<boolean> {
-      return new Promise((resolve: Resolve) => {
-        if (!this.isLogin) {
-          uni.navigateTo({
-            url: "/pages/login/login",
-          });
-          resolve(false);
-        }
-        resolve(true);
-      });
-    },
     // 自取
     takein(): void {
       uni.switchTab({
@@ -135,13 +122,16 @@ export default Vue.extend({
       });
     },
     // 外卖
-    async takeout(): Promise<void> {
-      const islogin = await this.handleIsLogin();
-      if (islogin) {
+    takeout(): boolean | undefined {
+      if (!this.isLogin) {
         uni.navigateTo({
-          url: "/pages/address/address",
+          url: "/pages/login/login",
         });
+        return false;
       }
+      uni.navigateTo({
+        url: "/pages/address/address",
+      });
     },
     // 我的积分
     integrals(): boolean | undefined {

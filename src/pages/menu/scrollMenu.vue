@@ -2,7 +2,6 @@
   <view class="content" :style="{ height: scrollHeight }">
     <scroll-view
       class="menus"
-      :scroll-into-view="menuScrollIntoView"
       scroll-with-animation
       scroll-y
     >
@@ -17,9 +16,9 @@
             @tap="handleMenuTap(item.id)"
           >
             <text>{{ item.name }}</text>
-            <view class="dot" v-show="cartNum(item.id)">{{
-              cartNum(item.id)
-            }}</view>
+            <view class="dot" v-show="cartNum(item.id)">
+              {{ cartNum(item.id) }}
+            </view>
           </view>
         </view>
       </view>
@@ -80,9 +79,8 @@
                       >
                         选规格
                       </button>
-                      <view class="dot" v-show="cartNum(good.id)">{{
-                        cartNum(good.id)
-                      }}</view>
+                      <view class="dot" v-show="cartNum(good.id)">
+                        {{ cartNum(good.id) }}</view>
                     </view>
                     <view class="btn-group" v-else>
                       <button
@@ -96,9 +94,9 @@
                       >
                         <view class="iconfont iconsami-select"></view>
                       </button>
-                      <view class="number" v-if="cartNum(good.id)">{{
-                        cartNum(good.id)
-                      }}</view>
+                      <view class="number" v-if="cartNum(good.id)">
+                        { cartNum(good.id) }}
+                      </view>
                       <button
                         type="primary"
                         class="btn add_btn"
@@ -133,16 +131,16 @@
 </template>
 
 <script lang="ts">
-// @ts-nocheck
 import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
 import GoodDetailModal from "./GoodDetailModal.vue";
 
 interface Data {
-  goods: never[];
-  menuScrollIntoView: string;
+  scrollHeight: number;
   currentCateId: number;
+  goods: never[];
   ads: unknown[];
+  goodFromCartVisible: boolean;
   cateScrollTop: number;
   sizeCalcState: boolean;
   category: unknown;
@@ -164,7 +162,6 @@ export default Vue.extend({
   data() {
     return {
       scrollHeight: 0, // 滚动区域高度
-      menuScrollIntoView: "",
       currentCateId: 0, // 左侧当前选中id
       ads: [
         // 商品列表轮播图片
@@ -233,7 +230,7 @@ export default Vue.extend({
       }
     },
     // 获取屏幕高度及比例
-    getContentHeight() {
+    getContentHeight(): void {
       uni.getSystemInfo({
         success: (res) => {
           // 获取屏幕高度
@@ -247,7 +244,7 @@ export default Vue.extend({
               }
               // 计算得出滚动区域的高度
               // this.scrollHeight = uni.upx2px(windowHeight - res2.height);
-              this.scrollHeight = windowHeight - res2.height + "px";
+              (this as any).scrollHeight = windowHeight - res2.height + "px";
             })
             .exec();
         },
@@ -263,15 +260,15 @@ export default Vue.extend({
       this.$nextTick(() => {
         this.currentCateId = id;
         // 第一项定位到顶部
-        if (id === this.goods[0].id) {
+        if (id === (this as any).goods[0].id) {
           this.cateScrollTop = 0;
         } else {
-          this.cateScrollTop = this.goods.find((item) => item.id == id).top;
+          this.cateScrollTop = (this as any).goods.find((item: any) => item.id == id).top;
         }
       });
     },
     // 商品列表滚动
-    handleGoodsScroll({ detail }: { detail: any }) {
+    handleGoodsScroll({ detail }: { detail: any }): void {
       // 计算每一个分类的到顶部高度
       if (!this.sizeCalcState) {
         this.calcSize();
@@ -280,21 +277,21 @@ export default Vue.extend({
       const { scrollTop } = detail;
       // +8，解决左侧菜单回跳上一分类问题
       // 高度偏差引起，top比scrollTop稍微大一点点
-      const tabs = this.goods.filter((item) => item.top <= scrollTop + 8);
+      const tabs: any = this.goods.filter((item: any) => item.top <= scrollTop + 8);
       if (tabs.length > 0) {
         this.currentCateId = tabs[tabs.length - 1].id;
       }
     },
     // 商品列表 - 滚动到顶部
-    handleGoodsScrollToupper() {
-      this.currentCateId = this.goods[0].id;
+    handleGoodsScrollToupper(): void {
+      this.currentCateId = (this as any).goods[0].id;
     },
     // 商品列表 - 滚动到底部
-    handleGoodsScrollTolower() {
-      this.currentCateId = this.goods[this.goods.length - 1].id;
+    handleGoodsScrollTolower(): void {
+      this.currentCateId = (this as any).goods[this.goods.length - 1].id;
     },
     // 计算每一个分类的到顶部高度
-    calcSize() {
+    calcSize(): void {
       let h = 10;
 
       // 支付宝小程序不支持in(component)，子组件使用无效果，只能把放在最外层组件获取
@@ -309,7 +306,7 @@ export default Vue.extend({
           }
         )
         .exec();
-      this.goods.forEach((item) => {
+      this.goods.forEach((item: any) => {
         let view = uni
           .createSelectorQuery()
           .in(this)
@@ -330,27 +327,27 @@ export default Vue.extend({
       this.sizeCalcState = true;
     },
     // 打开商品详情模态框
-    showGoodDetailModal(item: any, good: any) {
+    showGoodDetailModal(item: any, good: any): void {
       this.category = JSON.parse(JSON.stringify(item));
       this.good = JSON.parse(JSON.stringify({ ...good, number: 1 }));
       this.goodDetailModalVisible = true;
     },
     // 关闭商品详情模态框
-    closeGoodDetailModal() {
+    closeGoodDetailModal(): void {
       this.category = {};
       this.good = {};
       this.goodDetailModalVisible = false;
     },
     // 商品详情模态框 - 加入购物车
-    handleAddToCartInModal() {
+    handleAddToCartInModal(): void {
       this.category = {};
       this.good = {};
       this.goodDetailModalVisible = false;
     },
     // 没有规格商品 - 减少
-    handleReduceFromCart(item, good) {
+    handleReduceFromCart(item: unknown, good: any): void {
       const cartData = JSON.parse(JSON.stringify(this.cartData));
-      const index = cartData.findIndex((item) => item.id === good.id);
+      const index = cartData.findIndex((item: any) => item.id === good.id);
       cartData[index].number -= 1;
       if (cartData[index].number <= 0) {
         cartData.splice(index, 1);
@@ -358,9 +355,9 @@ export default Vue.extend({
       this.setCartData(cartData);
     },
     // 没有规格商品 - 增加
-    handleAddToCart(cate: any, good: any, num: any) {
+    handleAddToCart(cate: any, good: any, num: number): void {
       const cartData = JSON.parse(JSON.stringify(this.cartData));
-      const index = cartData.findIndex((item) => {
+      const index = cartData.findIndex((item: any) => {
         if (good.use_property) {
           return item.id === good.id && item.props_text === good.props_text;
         } else {

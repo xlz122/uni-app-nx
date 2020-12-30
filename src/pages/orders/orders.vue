@@ -195,9 +195,9 @@ export default Vue.extend({
       });
     },
     // 查看发票
-    goToInvoice() {},
+    goToInvoice(): void {},
     // 评价
-    review(order: any) {
+    review(order: any): void {
       const date = order.completed_time.split(" ")[0];
       const url = `/pages/review/review?storename=${order.store.nam}&typeCate=${order.typeCate}&date=${date}`;
       uni.navigateTo({

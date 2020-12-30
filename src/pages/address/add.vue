@@ -22,14 +22,16 @@
                 :class="{ checked: !form.sex }"
                 style="margin-right: 10rpx"
                 @tap="form.sex = 0"
-                >先生</view
               >
+                先生
+              </view>
               <view
                 class="radio"
                 :class="{ checked: form.sex }"
                 @tap="form.sex = 1"
-                >女士</view
               >
+                女士
+              </view>
             </view>
           </view>
         </list-cell>
@@ -84,9 +86,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapGetters, mapMutations } from "vuex";
 import ListCell from "@/components/list-cell/list-cell.vue";
 import SimpleAddress from "@/components/simple-address/simple-address.vue";
-import { mapGetters, mapMutations } from "vuex";
 
 export default Vue.extend({
   components: {

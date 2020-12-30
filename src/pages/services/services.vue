@@ -24,19 +24,18 @@
   </view>
 </template>
 
-<script>
-export default {
-  data() {
-    return {};
-  },
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
   methods: {
-    helpCenter() {
+    helpCenter(): void {
       uni.navigateTo({
         url: "/pages/services/help-center",
       });
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

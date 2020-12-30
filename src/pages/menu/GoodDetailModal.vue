@@ -89,8 +89,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Modal from "@/components/modal/modal.vue";
 import { mapGetters, mapMutations } from "vuex";
+import Modal from "@/components/modal/modal.vue";
+
 export default Vue.extend({
   components: {
     Modal

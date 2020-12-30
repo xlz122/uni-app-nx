@@ -274,14 +274,14 @@ export default Vue.extend({
       });
     },
     // 查看头像
-    previewImage() {
+    previewImage(): void {
       uni.previewImage({
         current: (this as any).imageList[0], // 当前展示图片
         urls: (this as any).imageList, // 展示图片数组
       });
     },
     // 从相册选择图片
-    chooseImage() {
+    chooseImage(): void {
       uni.chooseImage({
         count: 1, // 最多可以选择的图片张数，默认9
         sizeType: ["original", "compressed"], // original 原图，compressed 压缩图，默认二者都有
@@ -303,7 +303,7 @@ export default Vue.extend({
       });
     },
     // 拍照
-    chooseShot() {
+    chooseShot(): void {
       uni.chooseImage({
         count: 1, // 最多可以选择的图片张数，默认9
         sizeType: ["original", "compressed"], // original 原图，compressed 压缩图，默认二者都有

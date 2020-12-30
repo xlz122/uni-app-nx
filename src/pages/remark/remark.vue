@@ -81,7 +81,7 @@ export default Vue.extend({
   },
   methods: {
     // 备注输入
-    handleQuickInput(item: string) {
+    handleQuickInput(item: string): void {
       this.remark = this.remark.concat(" ", item);
     },
     // 完成

@@ -17,8 +17,9 @@
       <view
         class="font-size-lg text-color-base font-weight-bold"
         style="margin-bottom: 20rpx"
-        >储值金额</view
       >
+        储值金额
+      </view>
 
       <view class="d-flex flex-wrap justify-content-between amounts">
         <view
@@ -31,9 +32,9 @@
           :key="index"
           @tap="handleSelected(index)"
         >
-          <view class="font-size-extra-lg font-weight-bold">{{
-            parseInt(item.value)
-          }}</view>
+          <view class="font-size-extra-lg font-weight-bold">
+            {{ parseInt(item.value) }}
+          </view>
           <view class="font-size-sm font-weight-light">元</view>
         </view>
       </view>
@@ -42,8 +43,9 @@
         <view
           class="font-size-lg text-color-base font-weight-bold"
           style="margin-bottom: 20rpx"
-          >使用说明</view
         >
+          使用说明
+        </view>
         <view class="pre-line font-size-sm text-color-assist">
           {{ rechargeCard.desc }}
         </view>
@@ -123,7 +125,7 @@ export default Vue.extend({
       this.balance = Number((this.amounts[index] as any).value);
     },
     // 购买
-    recharge() {
+    recharge(): boolean | undefined {
       if (!this.agree) {
         uni.showToast({
           title: "请先勾选储值协议",

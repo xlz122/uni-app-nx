@@ -234,7 +234,6 @@ page {
     .wrapper {
       width: 100%;
       height: 100%;
-      .list {}
 
       .menu {
         display: flex;
@@ -282,6 +281,7 @@ page {
       height: 100%;
 
       .ads {
+        padding: 0 12rpx;
         height: calc(300 / 550 * 510rpx);
 
         image {
@@ -303,7 +303,7 @@ page {
           }
 
           .title {
-            padding: 30rpx 0;
+            padding: 30rpx 0 30rpx 14rpx;
             display: flex;
             align-items: center;
             color: $text-color-base;
@@ -324,6 +324,7 @@ page {
           .good {
             display: flex;
             align-items: center;
+            padding-left: 14rpx;
             margin-bottom: 30rpx;
 
             .image {

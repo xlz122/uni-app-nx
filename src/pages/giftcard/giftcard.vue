@@ -1,12 +1,12 @@
 <template>
   <view class="container">
     <view class="tabbar">
-      <view class="item" :class="{ active: !currentTab }" @tap="switchTab(0)"
-        >购买礼品卡</view
-      >
-      <view class="item" :class="{ active: currentTab }" @tap="switchTab(1)"
-        >我的礼品卡</view
-      >
+      <view class="item" :class="{ active: !currentTab }" @tap="switchTab(0)">
+        购买礼品卡
+      </view>
+      <view class="item" :class="{ active: currentTab }" @tap="switchTab(1)">
+        我的礼品卡
+      </view>
     </view>
     <swiper
       :duration="400"
@@ -31,9 +31,9 @@
               v-for="(category, index) in giftCards.category_list"
               :key="index"
             >
-              <view class="font-size-lg font-weight-bold">{{
-                category.name
-              }}</view>
+              <view class="font-size-lg font-weight-bold">
+                {{ category.name }}
+              </view>
               <view class="themes-list">
                 <view
                   class="theme"
@@ -66,14 +66,16 @@
               class="item"
               :class="{ active: !giftCardType }"
               @tap="switchGiftCardType(0)"
-              >可使用(0)</view
             >
+              可使用(0)
+            </view>
             <view
               class="item"
               :class="{ active: giftCardType }"
               @tap="switchGiftCardType(1)"
-              >不可使用(0)</view
             >
+              不可使用(0)
+            </view>
           </view>
           <view
             class="d-flex align-items-center text-color-primary"
@@ -97,9 +99,9 @@
                   style="width: 300rpx; margin-top: 100rpx"
                   mode="widthFix"
                 />
-                <view class="font-size-sm text-color-assist"
-                  >您暂时还没有礼品卡哦~</view
-                >
+                <view class="font-size-sm text-color-assist">
+                  您暂时还没有礼品卡哦~
+                </view>
               </view>
             </template>
           </swiper-item>
@@ -111,9 +113,9 @@
                   style="width: 300rpx; margin-top: 100rpx"
                   mode="widthFix"
                 />
-                <view class="font-size-sm text-color-assist"
-                  >您暂时还没有礼品卡哦~</view
-                >
+                <view class="font-size-sm text-color-assist">
+                  您暂时还没有礼品卡哦~
+                </view>
               </view>
             </template>
           </swiper-item>
@@ -158,7 +160,7 @@ export default Vue.extend({
   },
   methods: {
     // 获取礼品卡列表数据
-    async getListData() {
+    async getListData(): Promise<void> {
       this.giftCards = await (this as any).$api('giftCards');
     },
     // tab切换
@@ -170,46 +172,46 @@ export default Vue.extend({
       this.giftCardType = index;
     },
     // 礼品卡购买
-    giftCardPurchase(activityName: string) {
+    giftCardPurchase(activityName: string): void {
       uni.showToast({
         title: activityName,
         icon: 'none'
       });
     },
     // 购买须知
-    explain() {
+    explain(): void {
       uni.showToast({
         title: '暂无购买须知',
         icon: 'none'
       })
     },
     // 礼品卡章程
-    constitution() {
+    constitution(): void {
       uni.showToast({
         title: '暂无礼品卡章程',
         icon: 'none'
       })
     },
     // 我的礼品卡
-    handleSwiperItemChange() {
+    handleSwiperItemChange(): boolean {
       return true;
     },
     // 兑换礼品卡
-    exchange() {
+    exchange(): void {
       uni.showToast({
         title: '兑换礼品卡',
         icon: 'none'
       })
     },
     // 获取记录
-    obtain() {
+    obtain(): void {
       uni.showToast({
         title: '暂时没有获取记录',
         icon: 'none'
       })
     },
     // 赠送记录
-    give() {
+    give(): void {
       uni.showToast({
         title: '暂时没有赠送记录',
         icon: 'none'

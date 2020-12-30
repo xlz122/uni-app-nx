@@ -9,8 +9,9 @@
               <view class="d-flex align-items-baseline">
                 <view
                   class="font-size-extra-lg text-color-primary mr-10 font-weight-bold"
-                  >{{ pointGood.points_price }}</view
                 >
+                  {{ pointGood.points_price }}
+                </view>
                 <view class="font-size-base text-color-base">积分</view>
               </view>
               <view
@@ -25,8 +26,9 @@
               >
                 <view
                   class="font-size-extra-lg text-color-primary mr-10 font-weight-bold"
-                  >{{ pointGood.amount }}</view
                 >
+                  {{ pointGood.amount }}
+                </view>
                 <view class="font-size-base text-color-base">元</view>
               </view>
             </view>
@@ -35,10 +37,11 @@
                 {{ pointGood.goods_name }}
               </view>
               <view class="font-size-sm text-color-base">
-                剩余<text class="text-color-primary">{{
-                  pointGood.goods_stock
-                }}</text
-                >件
+                剩余
+                <text class="text-color-primary">
+                  {{ pointGood.goods_stock }}
+                </text>
+                件
               </view>
             </view>
           </view>
@@ -46,8 +49,9 @@
         <view class="bg-white mb-20" style="padding: 30rpx">
           <view
             class="d-flex align-items-center font-size-lg font-weight-bold line-height-2"
-            >商品详情</view
           >
+            商品详情
+          </view>
           <view class="font-size-base text-color-assist">
             <jyf-parser ref="desc"></jyf-parser>
           </view>
@@ -75,24 +79,27 @@
             <view class="font-size-sm text-color-base">积分</view>
           </view>
           <view class="stocks font-size-sm text-color-base">
-            剩余<text class="text-color-primary">{{
-              pointGood.goods_stock
-            }}</text
-            >件
+            剩余
+            <text class="text-color-primary">
+              {{ pointGood.goods_stock }}
+            </text>
+            件
           </view>
         </view>
         <view class="w-100 bg-white" style="padding: 30rpx">
           <view
             class="d-flex align-items-center font-size-lg font-weight-bold line-height-2"
-            >兑换须知</view
           >
+            兑换须知
+          </view>
           <view class="font-size-base text-color-assist">
             <jyf-parser ref="desc"></jyf-parser>
           </view>
           <view
             class="d-flex align-items-center font-size-lg font-weight-bold line-height-2"
-            >使用须知</view
           >
+            使用须知
+          </view>
           <view
             class="font-size-base text-color-base line-height-2 d-flex align-items-center"
             v-for="(item, index) in useTips"
@@ -122,12 +129,12 @@
 </template>
 
 <script>
-import jyfParser from "@/components/jyf-parser/jyf-parser";
+import JyfParser from "@/components/jyf-parser/jyf-parser.vue";
 import pointsMall from "@/api/points-mall";
 
 export default {
   components: {
-    jyfParser,
+    JyfParser,
   },
   data() {
     return {

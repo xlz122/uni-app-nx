@@ -19,8 +19,9 @@
                 <view
                   class="font-size-lg font-weight-bold text-truncate"
                   style="margin-bottom: 10rpx"
-                  >{{ address.street }}</view
                 >
+                  {{ address.street }}
+                </view>
                 <view class="font-size-sm text-color-assist">
                   {{ address.accept_name }}
                   {{ !address.gender ? "先生" : "女士" }} {{ address.mobile }}
@@ -125,9 +126,6 @@ export default Vue.extend({
     },
     // 地址选择
     chooseAddress(address: unknown): void {
-      // if (!this.ischoose) {
-      //   return false;
-      // }
       // 存储点餐页面用到的地址
       this.setAddress(address);
       // 点餐状态

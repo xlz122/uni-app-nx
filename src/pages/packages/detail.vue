@@ -31,17 +31,17 @@
             <view
               class="flex-fill flex-column justify-content-start overflow-hidden"
             >
-              <view class="text-right text-color-assist"
-                >x{{ coupon.coupon_num }}</view
-              >
+              <view class="text-right text-color-assist">
+                x{{ coupon.coupon_num }}
+              </view>
               <view
                 class="text-truncate font-size-extra-lg text-color-base w-80"
               >
                 {{ coupon.detail && coupon.detail.coupon_title }}
               </view>
-              <view class="font-size-sm text-color-assist">{{
-                coupon.detail.expire
-              }}</view>
+              <view class="font-size-sm text-color-assist">
+                {{ coupon.detail.expire }}
+              </view>
             </view>
           </view>
           <view

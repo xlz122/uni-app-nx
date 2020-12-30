@@ -23,8 +23,9 @@
         <view
           class="text-color-base font-weight-bold font-size-lg"
           style="margin: 20rpx 0"
-          >连续签到赚积分</view
         >
+          连续签到赚积分
+        </view>
         <uni-steps :active="activeDay" :options="stepsOption"></uni-steps>
         <view
           class="d-flex flex-column align-items-center just-content-center"
@@ -41,8 +42,9 @@
           <view
             class="font-size-base text-color-primary"
             style="margin-top: 20rpx"
-            >查看签到日历</view
           >
+            查看签到日历
+          </view>
         </view>
       </view>
 
@@ -84,34 +86,36 @@
                 <view
                   class="font-size-lg text-color-base text-truncate font-weight-bold"
                   style="margin-bottom: 10rpx"
-                  >{{ item.goods_name }}</view
                 >
+                  {{ item.goods_name }}
+                </view>
                 <view class="d-flex align-items-center">
                   <view class="d-flex align-items-baseline">
-                    <view class="font-size-base text-color-primary mr-10">{{
-                      item.points_price
-                    }}</view>
+                    <view class="font-size-base text-color-primary mr-10">
+                      {{ item.points_price }}
+                    </view>
                     <view class="font-size-sm text-color-assist">积分</view>
                   </view>
                   <view
                     v-if="item.amount > 0"
                     class="d-flex align-items-center font-size-sm text-color-assist"
                     style="margin: 0 10rpx"
-                    >+</view
                   >
+                    +
+                  </view>
                   <view
                     v-if="item.amount > 0"
                     class="d-flex align-items-baseline"
                   >
-                    <view class="font-size-base text-color-primary mr-10">{{
-                      parseFloat(item.amount)
-                    }}</view>
+                    <view class="font-size-base text-color-primary mr-10">
+                      {{ parseFloat(item.amount) }}
+                    </view>
                     <view class="font-size-sm text-color-assist">元</view>
                   </view>
                 </view>
-                <view class="font-size-sm text-color-assist"
-                  >剩余{{ item.goods_stock }}件</view
-                >
+                <view class="font-size-sm text-color-assist">
+                  剩余{{ item.goods_stock }}件
+                </view>
               </view>
             </view>
           </block>
@@ -125,8 +129,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
-import navbarBackButton from "@/components/navbar-back-button.vue";
-import uniSteps from "@/components/uni-steps/uni-steps.vue";
+import NavbarBackButton from "@/components/navbar-back-button.vue";
+import UniSteps from "@/components/uni-steps/uni-steps.vue";
 
 interface Data {
   attendanceText: string;
@@ -138,8 +142,8 @@ interface Data {
 
 export default Vue.extend({
   components: {
-    navbarBackButton,
-    uniSteps,
+    NavbarBackButton,
+    UniSteps,
   },
   data() {
     return {
@@ -167,7 +171,7 @@ export default Vue.extend({
 	},
   methods: {
     ...mapMutations(["setIsAttendance"]),
-    async getStepsOptions() {
+    async getStepsOptions(): Promise<void> {
       let stepsOptions: unknown[] = [];
 
       const attendance = await (this as any).$api("attendance");
@@ -196,7 +200,7 @@ export default Vue.extend({
       this.pointsMall = await (this as any).$api("pointsMall");
 		},
 		// 签到
-    attendance() {
+    attendance(): boolean | undefined {
       if (this.userInfo.isAttendance) {
         return false;
       }

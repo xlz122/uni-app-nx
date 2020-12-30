@@ -32,14 +32,16 @@
                 :class="{ checked: userInfo.gender == '1' }"
                 style="margin-right: 10rpx"
                 @tap="userInfo.gender = 1"
-                >先生</view
               >
+                先生
+              </view>
               <view
                 class="radio"
                 :class="{ checked: userInfo.gender == '2' }"
                 @tap="userInfo.gender = 2"
-                >女士</view
               >
+                女士
+              </view>
             </view>
           </view>
         </view>
@@ -77,36 +79,36 @@
   </view>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
-import listCell from "@/components/list-cell/list-cell.vue";
 import { mapGetters } from "vuex";
+import ListCell from "@/components/list-cell/list-cell.vue";
 
 export default Vue.extend({
   components: {
-    listCell,
+    ListCell,
   },
   data() {
     return {
-      date: this.getDate({ format: true }),
+      date: (this as any).getDate({ format: true }),
     };
   },
   computed: {
     ...mapGetters(["userInfo"]),
     startDate() {
-      return this.getDate("start");
+      return (this as any).getDate("start");
     },
     endDate() {
-      return this.getDate("end");
+      return (this as any).getDate("end");
     },
   },
   methods: {
     // 获取格式化后的时间
-    getDate(type) {
+    getDate(type: string): string {
       const date = new Date();
-      let year = date.getFullYear();
-      let month = date.getMonth() + 1;
-      let day = date.getDate();
+      let year: number | string = date.getFullYear();
+      let month: number | string = date.getMonth() + 1;
+      let day: number | string = date.getDate();
 
       if (type === "start") {
         year = year - 60;
@@ -118,14 +120,16 @@ export default Vue.extend({
       return `${year}-${month}-${day}`;
     },
     // 生日选择
-    handleDateChange(e) {
+    handleDateChange(e: any): void {
       this.userInfo.birthday = e.target.value;
     },
     // 保存
-    save() {
+    save(): void {
       const userInfo = Object.assign(this.$store.state.userInfo, this.userInfo);
       this.$store.commit("setUserInfo", userInfo);
-      uni.navigateBack();
+      uni.navigateBack({
+        delta: 1
+      });
     },
   },
 });

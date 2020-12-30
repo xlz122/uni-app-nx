@@ -141,7 +141,7 @@ export default Vue.extend({
       }
     },
     // 支付宝 - 授权登录
-    onGetAuthorize() {
+    onGetAuthorize(): void {
       (my as any).getOpenUserInfo({
         fail: (res: any) => {
           console.log(res);
@@ -172,7 +172,7 @@ export default Vue.extend({
       });
     },
     // 支付宝 - 取消授权
-    onAuthError() {
+    onAuthError(): void {
       uni.showModal({
         title: "提示",
         content: "您取消了授权登录，请重新授权",

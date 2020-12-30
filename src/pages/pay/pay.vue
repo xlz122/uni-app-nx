@@ -20,9 +20,9 @@
               <view
                 class="d-flex align-items-center justify-content-between mb-10"
               >
-                <view class="font-size-extra-lg text-color-base">{{
-                  address.street
-                }}</view>
+                <view class="font-size-extra-lg text-color-base">
+                  {{ address.street }}
+                </view>
                 <image
                   src="/static/images/navigator-1.png"
                   class="arrow"
@@ -59,9 +59,9 @@
                   placeholder="请输入手机号码"
                 />
               </view>
-              <view class="contact-tip font-size-sm" @tap="fillInPhone"
-                >自动填写</view
-              >
+              <view class="contact-tip font-size-sm" @tap="fillInPhone">
+                自动填写
+              </view>
             </view>
           </list-cell>
         </template>
@@ -177,11 +177,11 @@
             <view class="flex-fill"
               >余额支付（余额{{
                 userInfo.balance > 0 ? userInfo.balance : 0
-              }}）</view
-            >
-            <view class="font-size-sm">{{
-              userInfo.balance > amount ? "" : "余额不足"
-            }}</view>
+              }}）
+            </view>
+            <view class="font-size-sm">
+              {{ userInfo.balance > amount ? "" : "余额不足" }}
+            </view>
             <view
               class="iconfont line-height-100 checkbox"
               :class="[
@@ -217,9 +217,9 @@
           class="d-flex flex-fill align-items-center justify-content-between overflow-hidden"
         >
           <view class="flex-shrink-0 mr-20">备注</view>
-          <view class="text-color-primary flex-fill text-truncate text-right">{{
-            form.remark || "点击填写备注"
-          }}</view>
+          <view class="text-color-primary flex-fill text-truncate text-right">
+            {{ form.remark || "点击填写备注" }}
+          </view>
         </view>
       </list-cell>
       <!-- 备注 end -->
@@ -258,16 +258,16 @@
           class="d-flex just-content-center align-items-center"
           style="margin-bottom: 40px"
         >
-          <view class="font-size-extra-lg text-color-base"
-            >请再次确认下单地址</view
-          >
+          <view class="font-size-extra-lg text-color-base">
+            请再次确认下单地址
+          </view>
         </view>
         <view
           class="d-flex font-size-base text-color-base font-weight-bold align-items-center justify-content-between mb-20"
         >
-          <view
-            >{{ address.accept_name }} {{ address.sex ? "女士" : "先生" }}</view
-          >
+          <view>
+            {{ address.accept_name }} {{ address.sex ? "女士" : "先生" }}
+          </view>
           <view>{{ address.mobile }}</view>
         </view>
         <view

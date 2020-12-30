@@ -20,12 +20,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import listCell from "@/components/list-cell/list-cell.vue";
+import ListCell from "@/components/list-cell/list-cell.vue";
 
 export default Vue.extend({
   name: "rateFormItem",
   components: {
-    listCell,
+    ListCell,
   },
   props: {
     value: {

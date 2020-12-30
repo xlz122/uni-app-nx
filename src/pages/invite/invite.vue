@@ -1,10 +1,5 @@
 <template>
   <view class="container">
-    <!-- <image src="https://img-shop.qmimg.cn/s16/images/2020/04/27/7ba54456f16f48df.jpeg"></image> -->
-    <!-- 		<image src="https://img-shop.qmimg.cn/s16/images/2020/04/27/ca59f6bbbb830a16.png"></image>
-		<image src="https://img-shop.qmimg.cn/s16/images/2020/04/22/36d4a67a6ede4068.png"></image>
-		<image src="https://img-shop.qmimg.cn/s16/images/2020/04/21/7a7cde7fb0259f0d.png"></image>
-		<image src="https://img-shop.qmimg.cn//s16/images/2020/04/21/a45e8244188a5ea0.png"></image> -->
     <view class="invite-box">
       <view
         class="w-100 d-flex justify-content-end align-items-baseline font-size-sm"

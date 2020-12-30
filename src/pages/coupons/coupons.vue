@@ -44,11 +44,12 @@
               >
                 <view
                   class="font-size-lg text-color-base text-truncate mb-10"
-                  >{{ item.title }}</view
                 >
-                <view class="font-size-sm text-color-base"
-                  >有效期至{{ item.endAt }}</view
-                >
+                  {{ item.title }}
+                </view>
+                <view class="font-size-sm text-color-base">
+                  有效期至{{ item.endAt }}
+                </view>
               </view>
             </view>
             <view
@@ -97,9 +98,9 @@
 
 <script lang="ts">
 import Vue from "vue";
+import { mapGetters, mapMutations } from "vuex";
 import Modal from "@/components/modal/modal.vue";
 import JyfParser from "@/components/jyf-parser/jyf-parser.vue";
-import { mapGetters, mapMutations } from "vuex";
 
 interface Data {
   scene: string;

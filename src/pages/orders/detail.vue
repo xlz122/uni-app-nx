@@ -123,7 +123,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Orders from '@/api/orders';
-import listCell from "@/components/list-cell/list-cell.vue";
+import ListCell from "@/components/list-cell/list-cell.vue";
 
 interface Data {
   order: unknown;
@@ -131,7 +131,7 @@ interface Data {
 
 export default Vue.extend({
   components: {
-    listCell,
+    ListCell,
   },
   data() {
     return {
@@ -143,9 +143,9 @@ export default Vue.extend({
   },
   methods: {
     // 查看发票
-    goToInvoice() {},
+    goToInvoice(): void {},
     // 评价
-    review(order: any) {
+    review(order: any): void {
       const date = order.completed_time.split(' ')[0];
       uni.navigateTo({
 				url: '/pages/review/review?storename=' + order.store.name + '&typeCate=' + order.typeCate + '&date=' + date

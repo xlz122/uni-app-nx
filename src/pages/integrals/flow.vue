@@ -15,20 +15,20 @@
       >
         <view class="w-100 d-flex align-items-center">
           <view class="flex-fill d-flex flex-column">
-            <view class="font-size-lg text-color-base mb-10">{{
-              item.reason
-            }}</view>
-            <view class="font-size-base text-color-assist">{{
-              item.createdAt
-            }}</view>
+            <view class="font-size-lg text-color-base mb-10">
+              {{ item.reason }}
+            </view>
+            <view class="font-size-base text-color-assist">
+              {{ item.createdAt }}
+            </view>
           </view>
           <view class="d-flex flex-column align-items-center">
             <view class="font-size-lg text-color-base font-weight-bold">
               {{ item.changeType == 1 ? "+" : "-" }}{{ item.changeNum }}
             </view>
-            <view class="font-size-sm text-color-assist">{{
-              item.sellerName
-            }}</view>
+            <view class="font-size-sm text-color-assist">
+              {{ item.sellerName }}
+            </view>
           </view>
         </view>
       </list-cell>
@@ -38,9 +38,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import listCell from "@/components/list-cell/list-cell.vue";
-import pointsFlow from "@/api/points-flow";
 import { mapGetters } from 'vuex';
+import ListCell from "@/components/list-cell/list-cell.vue";
+import pointsFlow from "@/api/points-flow";
 
 interface Data {
 	pointNum: number;
@@ -49,7 +49,7 @@ interface Data {
 
 export default {
   components: {
-    listCell,
+    ListCell,
   },
   data() {
     return {

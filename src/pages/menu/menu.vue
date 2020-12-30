@@ -33,9 +33,14 @@
             <view
               class="font-size-sm text-color-assist overflow-hidden text-truncate"
             >
-              由<text class="text-color-base" style="margin: 0 10rpx" :selectable="false">{{
-                store.name
-              }}</text
+              由
+              <text
+                class="text-color-base"
+                style="margin: 0 10rpx"
+                :selectable="false"
+              >
+                {{ store.name }}
+              </text
               >配送
             </view>
           </view>
@@ -57,7 +62,9 @@
           </view>
         </view>
         <view class="coupon">
-          <text class="title" :selectable="false">"霸气mini卡"超级购券活动，赶紧去购买</text>
+          <text class="title" :selectable="false">
+            "霸气mini卡"超级购券活动，赶紧去购买
+          </text>
           <view class="iconfont iconarrow-right"></view>
         </view>
       </view>
@@ -174,8 +181,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import { chooseLocation } from '@/common/map';
-import ScrollMenu from './scrollMenu.vue';
+import { chooseLocation } from "@/common/map";
+import ScrollMenu from "./scrollMenu.vue";
 import Modal from "@/components/modal/modal.vue";
 import PopupLayer from "@/components/popup-layer/popup-layer.vue";
 
@@ -195,7 +202,7 @@ export default Vue.extend({
     return {
       loading: true,
       goods: [], // 商品数据
-      cartPopupVisible: false // 购物车列表
+      cartPopupVisible: false, // 购物车列表
     } as Data;
   },
   computed: {
@@ -206,7 +213,10 @@ export default Vue.extend({
     },
     //计算购物车总价
     getCartGoodsPrice() {
-      return this.cartData.reduce((acc: any, cur: any) => acc + cur.number * cur.price, 0);
+      return this.cartData.reduce(
+        (acc: any, cur: any) => acc + cur.number * cur.price,
+        0
+      );
     },
     //是否达到起送价
     disabledPay() {
@@ -228,10 +238,6 @@ export default Vue.extend({
   },
   methods: {
     ...mapMutations(["setStore", "setOrderType", "setCartData"]),
-    // 获取位置
-    getPosition() {
-      chooseLocation();
-    },
     // 页面初始化
     async init(): Promise<void> {
       (this as any).loading = true;
@@ -242,8 +248,13 @@ export default Vue.extend({
       (this as any).goods = await (this as any).$api("goods");
       (this as any).loading = false;
     },
+    // 获取位置
+    getPosition() {
+      chooseLocation();
+    },
     // 自取/外卖切换
     takout(): boolean | undefined {
+      // 自取不跳转地址选择
       if (this.orderType == "takeout") return false;
 
       if (!this.isLogin) {
@@ -258,19 +269,6 @@ export default Vue.extend({
     // 打开/关闭购物车列表popup
     openCartPopup() {
       (this as any).cartPopupVisible = !(this as any).cartPopupVisible;
-    },
-    // 清空购物车
-    handleCartClear() {
-      uni.showModal({
-        title: "提示",
-        content: "确定清空购物车么",
-        success: ({ confirm }) => {
-          if (confirm) {
-            (this as any).cartPopupVisible = false;
-            (this as any).setCartData([]);
-          }
-        },
-      });
     },
     // 购物车单个商品数量增加
     handleCartItemAdd(index: number) {
@@ -291,19 +289,29 @@ export default Vue.extend({
       }
       (this as any).setCartData(cartData);
     },
+    // 清空购物车
+    handleCartClear() {
+      uni.showModal({
+        title: "提示",
+        content: "确定清空购物车么",
+        success: ({ confirm }) => {
+          if (confirm) {
+            (this as any).cartPopupVisible = false;
+            (this as any).setCartData([]);
+          }
+        },
+      });
+    },
     // 去结算
-    toPay(): boolean | undefined    {
+    toPay(): boolean | undefined {
       if (!this.isLogin) {
         uni.navigateTo({ url: "/pages/login/login" });
         return false;
       }
 
-      uni.showLoading({ title: "加载中" });
-
       uni.navigateTo({
         url: "/pages/pay/pay",
       });
-      uni.hideLoading();
     },
   },
 });
