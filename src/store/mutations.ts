@@ -72,11 +72,11 @@ const mutations: Mutations<State> = {
   setAddersses(state, addresses: unknown) {
     state.addresses = addresses;
   },
-  // 账户余额充值
+  // 账户余额增加
   setAddBalance(state, balance: number) {
     (state.userInfo as any).balance += balance;
   },
-  // 账户余额消费
+  // 账户余额减少
   setSubtractBalance(state, balance: number) {
     (state.userInfo as any).balance -= balance;
   }

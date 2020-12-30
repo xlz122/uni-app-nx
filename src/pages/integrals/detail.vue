@@ -114,11 +114,11 @@
       <view class="btn-box">
         <button
           type="primary"
-          :disabled="customPoints.totalPoints < pointGood.points_price"
+          :disabled="userInfo.pointNum < pointGood.points_price"
 					@tap="exchange"
         >
           {{
-            customPoints.totalPoints < pointGood.points_price
+            userInfo.pointNum < pointGood.points_price
               ? "积分不足"
               : "立即兑换"
           }}
@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 import JyfParser from "@/components/jyf-parser/jyf-parser.vue";
 import pointsMall from "@/api/points-mall";
 
@@ -138,7 +139,6 @@ export default {
   },
   data() {
     return {
-      customPoints: {},
       pointGood: {},
       useTips: [
         { title: "使用条件", value: "无门槛" },
@@ -153,20 +153,56 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters(["userInfo"])
+  },
   async onLoad({ cate, id }) {
     this.pointGood = pointsMall[cate].find((item) => item.id == id);
     this.$nextTick(() =>
       this.$refs["desc"].setContent(this.pointGood.exchange_desc || "")
     );
-    this.customPoints = await this.$api("customPoints");
 	},
 	methods: {
+    ...mapMutations(["setReducePointNum", "setSubtractBalance"]),
 		// 立即兑换
 		exchange() {
-			uni.showToast({
-				title: "立即兑换",
-				icon: "none"
-			})
+      this.setReducePointNum(this.pointGood.points_price);
+      // 不需要支付
+      if (this.pointGood.amount === 0) {
+        return false;
+      }
+      // 余额不足，跳转至充值
+      if (this.userInfo.balance < this.pointGood.amount) {
+        uni.showModal({
+          title: "温馨提示",
+          content: "余额不足，请前往充值",
+          confirmText: "去充值",
+          success(res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: "/pages/balance/balance",
+              });
+            }
+          },
+        });
+        return false;
+      }
+      this.setSubtractBalance(this.pointGood.amount);
+      uni.showLoading({
+        title: "兑换中...",
+        icon: "none"
+      })
+      setTimeout(() => {
+        uni.showToast({
+          title: "兑换成功",
+          icon: "none"
+        });
+      }, 1500);
+      setTimeout(() => {
+        uni.navigateBack({
+          delta: 1
+        });
+      }, 2000);
 		}
 	}
 };
