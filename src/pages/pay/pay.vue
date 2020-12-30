@@ -322,7 +322,8 @@ export default Vue.extend({
       "store",
       "coupon",
       "cartData",
-      "orderData"
+      "orderData",
+      "cardVoucher"
     ]),
     // 实际付的钱
     total() {
@@ -354,7 +355,14 @@ export default Vue.extend({
     );
   },
   methods: {
-    ...mapMutations(["setSubtractBalance", "setOrder", "setOrderData", "setCartData"]),
+    ...mapMutations([
+      "setSubtractBalance",
+      "setOrder",
+      "setOrderData",
+      "setCartData",
+      "setReduceCardVoucherNum",
+      "setCardVoucher"
+    ]),
     // 手机号 - 自动填写
     fillInPhone(): void {
       (this as any).form.mobilePhone = (this as any).userInfo.mobilePhone;
@@ -448,19 +456,32 @@ export default Vue.extend({
         title: "加载中...",
       });
       setTimeout(() => {
+        // 奈雪券使用
+        if (Object.keys(this.coupon).length > 0) {
+          let cardVoucher = JSON.parse(JSON.stringify((this as any).cardVoucher));
+          const index = cardVoucher.findIndex((item: any) => item.id === (this.coupon.id));
+          if (index !== -1) {
+            cardVoucher.splice(index, 1);
+            (this as any).setReduceCardVoucherNum(1);
+            (this as any).setCardVoucher(cardVoucher);
+          }
+        }
         // 支付成功
         (this as any).setSubtractBalance(Number((this as any).amountCount));
+        
         // 获取订单数据
         const order = (this as any).handleOrderData();
         // 存储订单
         (this as any).setOrder(order);
-        // 添加到订单数据
+        // 添加到所有订单数据
         const orderData = JSON.parse(JSON.stringify((this as any).orderData));
         orderData.unshift(order);
         (this as any).setOrderData(orderData);
         uni.setStorageSync("orderData", orderData);
+
         // 删除点餐数据
         (this as any).setCartData([]);
+
         // 跳转至订单
         uni.reLaunch({
           url: "/pages/take-foods/take-foods",

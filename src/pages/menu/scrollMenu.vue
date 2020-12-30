@@ -95,7 +95,7 @@
                         <view class="iconfont iconsami-select"></view>
                       </button>
                       <view class="number" v-if="cartNum(good.id)">
-                        { cartNum(good.id) }}
+                        {{ cartNum(good.id) }}
                       </view>
                       <button
                         type="primary"

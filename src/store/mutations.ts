@@ -28,9 +28,13 @@ const mutations: Mutations<State> = {
   setIsAttendance(state, isAttendance: boolean) {
     (state.userInfo as any).isAttendance = isAttendance;
   },
-  // 我的 - 卡券数量
+  // 我的 - 卡券数量增加
   setCardVoucherNum(state, couponNum: number) {
     (state.userInfo as any).couponNum += couponNum;
+  },
+  // 我的 - 卡券数量减少
+  setReduceCardVoucherNum(state, couponNum: number) {
+    (state.userInfo as any).couponNum -= couponNum;
   },
   // 我的 - 增加积分
   setAddPointNum(state, pointNum: number) {
