@@ -13,7 +13,9 @@
 
 原项目使用 HBuilderX 开发，本项目使用 vue-cli 的方式创建项目，并且使用 typescript 开发。
 
-2020-12-30 17:00 本项目不再更新。
+项目兼容H5，微信小程序，支付宝小程序，其余未测试。
+
+2020-12-30 17:13 本项目不再更新。
 
 如有问题，请联系QQ``122874722``。
 
@@ -48,8 +50,10 @@ yarn install
 yarn serve
 ```
 
-项目打包（微信小程序）
+项目打包
 
 ```
+yarn build:h5
 yarn build:mp-weixin
+yarn build:mp-alipay
 ```
