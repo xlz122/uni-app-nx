@@ -23,7 +23,10 @@
 			"style": {
 				"navigationBarTitleText": "菜单",
 				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#ffffff"
+				"navigationBarBackgroundColor": "#ffffff",
+				"mp-alipay":{
+					"allowsBounceVertical": "NO" // 禁止页面拖动
+				}
 			}
 		},
 		{
@@ -154,7 +157,11 @@
 			"path": "pages/integrals/integrals",
 			"style": {
 				"navigationStyle": "custom",
-				"onReachBottomDistance": 50
+				"onReachBottomDistance": 50,
+				"mp-alipay": {
+					"transparentTitle": "always",
+					"titlePenetrate": "YES"
+				}
 			}
 		},
 		{
@@ -193,7 +200,11 @@
 		{
 			"path": "pages/attendance/attendance",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationStyle": "custom",
+				"mp-alipay": {
+					"transparentTitle": "always",
+					"titlePenetrate": "YES"
+				}
 			}
 		},
 		{

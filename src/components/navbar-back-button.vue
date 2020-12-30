@@ -38,4 +38,10 @@
 </script>
 
 <style lang="scss" scoped>
+// 支付宝自带返回，隐藏
+/*  #ifdef MP-ALIPAY  */
+.position-absolute {
+  display: none;
+}
+/*  #endif  */
 </style>

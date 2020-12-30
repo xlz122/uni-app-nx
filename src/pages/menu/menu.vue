@@ -150,7 +150,6 @@
                 <button
                   type="default"
                   plain
-                  size="mini"
                   class="btn"
                   hover-class="none"
                 >
@@ -160,7 +159,6 @@
                 <button
                   type="primary"
                   class="btn"
-                  size="min"
                   hover-class="none"
                 >
                   <view class="iconfont iconadd-select"></view>
@@ -319,4 +317,85 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 @import "~@/pages/menu/menu.scss";
+// 支付宝小程序，ui组件作为父class，样式会失效
+.top {
+  background-color: $bg-color-primary;
+  color: $color-primary;
+  padding: 10rpx 30rpx;
+  font-size: 24rpx;
+  text-align: right;
+}
+.cart-list {
+  background-color: #FFFFFF;
+  width: 100%;
+  overflow: hidden;
+  min-height: 1vh;
+  max-height: 60vh;
+  .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 30rpx;
+    margin-bottom: 156rpx;
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30rpx 0;
+      position: relative;
+      &::after {
+        content: ' ';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: $border-color;
+        height: 2rpx;
+        transform: scaleY(.6);
+      }
+      .left {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        margin-right: 30rpx;
+        .name {
+          font-size: $font-size-sm;
+          color: $text-color-base;
+        }
+        .props {
+          color: $text-color-assist;
+          font-size: 24rpx;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      .center {
+        margin-right: 120rpx;
+        font-size: $font-size-base;
+      }
+      .right {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .btn {
+          width: 46rpx;
+          height: 46rpx;
+          border-radius: 100%;
+          padding: 0;
+          text-align: center;
+          line-height: 46rpx;
+        }
+        .number {
+          font-size: $font-size-base;
+          width: 46rpx;
+          height: 46rpx;
+          text-align: center;
+          line-height: 46rpx;
+        }
+      }
+    }
+  }
+}
 </style>

@@ -12,11 +12,15 @@
     <view class="cover">
       <image v-if="good.images" :src="good.images" class="image"></image>
       <view class="btn-group">
-        <image src="/static/images/menu/share-good.png"></image>
-        <image
-          src="/static/images/menu/close.png"
-          @tap="closeGoodDetailModal"
-        ></image>
+        <view class="btn-group-image">
+          <image src="/static/images/menu/share-good.png"></image>
+        </view>
+        <view class="btn-group-image">
+          <image
+            src="/static/images/menu/close.png"
+            @tap="closeGoodDetailModal"
+          ></image>
+        </view>
       </view>
     </view>
     <scroll-view class="detail" scroll-y>
@@ -62,7 +66,6 @@
           type="default"
           plain
           class="btn"
-          size="mini"
           hover-class="none"
           @tap="handlePropertyReduce"
         >
@@ -72,7 +75,6 @@
         <button
           type="primary"
           class="btn"
-          size="min"
           hover-class="none"
           @tap="handlePropertyAdd"
         >
@@ -193,6 +195,195 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/pages/menu/menu.scss";
+// 支付宝小程序，ui组件作为父class，样式会失效
+.good-detail-modal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.cover {
+    height: 320rpx;
+    padding: 30rpx 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .image {
+      width: 260rpx;
+      height: 260rpx;
+    }
+
+    .btn-group {
+      position: absolute;
+      right: 10rpx;
+      top: 30rpx;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      image {
+        width: 80rpx;
+        height: 80rpx;
+      }
+    }
+  }
+
+  .detail {
+    width: 100%;
+    min-height: 1vh;
+    max-height: calc(90vh - 320rpx - 80rpx - 120rpx);
+
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      .basic {
+        padding: 0 20rpx 30rpx;
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          font-size: $font-size-base;
+          color: $text-color-base;
+          margin-bottom: 10rpx;
+        }
+
+        .tips {
+          font-size: $font-size-sm;
+          color: $text-color-grey;
+        }
+      }
+
+      .properties {
+        width: 100%;
+        border-top: 2rpx solid $bg-color-grey;
+        padding: 10rpx 30rpx 0;
+        display: flex;
+        flex-direction: column;
+
+        .property {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 30rpx;
+          padding-bottom: -16rpx;
+
+          .title {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 20rpx;
+
+            .name {
+              font-size: 26rpx;
+              color: $text-color-base;
+              margin-right: 20rpx;
+            }
+
+            .desc {
+              flex: 1;
+              font-size: $font-size-sm;
+              color: $color-primary;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          }
+
+          .values {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+
+            .value {
+              border-radius: 8rpx;
+              background-color: $bg-color-grey;
+              padding: 16rpx 30rpx;
+              font-size: 26rpx;
+              color: $text-color-assist;
+              margin-right: 16rpx;
+              margin-bottom: 16rpx;
+
+              &.default {
+                background-color: $color-primary;
+                color: $text-color-white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $bg-color-grey;
+    height: 120rpx;
+    padding: 0 26rpx;
+
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 20rpx;
+      overflow: hidden;
+
+      .price {
+        font-size: $font-size-lg;
+        color: $text-color-base;
+      }
+
+      .props {
+        color: $text-color-assist;
+        font-size: 24rpx;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .btn-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      .number {
+        font-size: $font-size-base;
+        width: 44rpx;
+        height: 44rpx;
+        line-height: 44rpx;
+        text-align: center;
+      }
+
+      .btn {
+        padding: 0;
+        font-size: $font-size-base;
+        width: 44rpx;
+        height: 44rpx;
+        line-height: 44rpx;
+        border-radius: 100%;
+      }
+    }
+  }
+
+  .add-to-cart-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-primary;
+    color: $text-color-white;
+    font-size: $font-size-base;
+    height: 80rpx;
+    border-radius: 0 0 12rpx 12rpx;
+  }
 </style>

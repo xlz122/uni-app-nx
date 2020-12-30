@@ -88,7 +88,6 @@
                         v-if="cartNum(good.id)"
                         plain
                         class="btn reduce_btn"
-                        size="mini"
                         hover-class="none"
                         @tap="handleReduceFromCart(item, good)"
                       >
@@ -100,7 +99,6 @@
                       <button
                         type="primary"
                         class="btn add_btn"
-                        size="mini"
                         hover-class="none"
                         @tap="handleAddToCart(item, good, 1)"
                       >
@@ -120,7 +118,7 @@
     <!-- goods list end -->
     <!-- 商品详情模态框 begin -->
     <good-detail-modal
-      v-show="goodDetailModalVisible"
+      v-if="goodDetailModalVisible"
       :category="category"
       :good="good"
       @closeGoodDetailModal="closeGoodDetailModal"

@@ -50,16 +50,17 @@
         <view class="form-input w-100 d-flex align-items-center">
           <view class="label">生日</view>
           <view class="input flex-fill">
-            <picker
-              mode="date"
-              :value="date"
-              :start="startDate"
-              :end="endDate"
-              v-if="!userInfo.birthday"
-              @change="handleDateChange"
-            >
-              生日当天有惊喜
-            </picker>
+            <template v-if="!userInfo.birthday">
+              <picker
+                mode="date"
+                :value="date"
+                :start="startDate"
+                :end="endDate"
+                @change="handleDateChange"
+              >
+                <text>生日当天有惊喜</text>
+              </picker>
+            </template>
             <input type="text" v-else :value="userInfo.birthday" disabled />
           </view>
         </view>
