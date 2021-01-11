@@ -14,6 +14,11 @@
         登录
       </button>
       <!-- #endif -->
+      <!-- #ifdef APP-PLUS -->
+      <button type="primary" size="default" class="login-btn" @tap="login">
+        登录
+      </button>
+      <!-- #endif -->
       <!-- #ifdef MP-WEIXIN -->
       <button
         type="primary"
