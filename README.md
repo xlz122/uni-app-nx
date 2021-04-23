@@ -55,6 +55,8 @@ yarn build:mp-alipay
 
 ### 项目效果图
 
+|首页|点餐|取餐|我的|登录|订单|
+|---|---|---|---|---|---|---|
 ![](./src/static/design-sketch/home.jpg)
 ![](./src/static/design-sketch/menu.jpg)
 ![](./src/static/design-sketch/order.jpg)
