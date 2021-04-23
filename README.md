@@ -4,9 +4,6 @@
 本项目仿写 ``tinypuppet`` 的uni-app项目
 
 原项目github地址: [https://github.com/tinypuppet/nxdc-milktea](https://github.com/tinypuppet/nxdc-milktea)
-
-原项目gitee地址：[https://gitee.com/tinypuppet/nxdc-milktea](https://gitee.com/tinypuppet/nxdc-milktea)
-
 ### 简介
 
 一套仿奈雪の茶小程序的项目模板。
@@ -55,3 +52,15 @@ yarn build:h5
 yarn build:mp-weixin
 yarn build:mp-alipay
 ```
+
+### 项目效果图
+
+![](./src/static/design-sketch/home.png)
+![](./src/static/design-sketch/menu.png)
+![](./src/static/design-sketch/order.png)
+![](./src/static/design-sketch/user.png)
+![](./src/static/design-sketch/login.png)
+![](./src/static/design-sketch/order-details.png)
+## 写在最后
+
+* 本项目仅用于学习使用，切勿用于商业用途，否则产生的法律后果与作者无关。
