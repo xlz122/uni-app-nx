@@ -55,9 +55,9 @@ yarn build:mp-alipay
 
 ### 项目效果图
 
-|首页|点餐|饮品详情|我的|取餐|
+|首页|点餐|取餐|我的|登录|
 |---|---|---|---|---|
-|![](./src/static/design-sketch/home.jpg)|![](./src/static/design-sketch/menu.jpg)|![](https://img.cdn.aliyun.dcloud.net.cn/stream/plugin_screens/fafaa180-94f3-11ea-9423-8760f636375f_2.jpg?v=1590130842)|![](https://img.cdn.aliyun.dcloud.net.cn/stream/plugin_screens/fafaa180-94f3-11ea-9423-8760f636375f_3.jpg?v=1590130842)|![](https://img.cdn.aliyun.dcloud.net.cn/stream/plugin_screens/fafaa180-94f3-11ea-9423-8760f636375f_4.jpg?v=1590130842)|
+|![](./src/static/design-sketch/home.jpg)|![](./src/static/design-sketch/menu.jpg)|![](./src/static/design-sketch/order.jpg)|![](./src/static/design-sketch/user.jpg)|![](./src/static/design-sketch/login.jpg)|
 ## 写在最后
 
 * 本项目仅用于学习使用，切勿用于商业用途，否则产生的法律后果与作者无关。
