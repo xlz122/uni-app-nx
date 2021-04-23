@@ -55,12 +55,12 @@ yarn build:mp-alipay
 
 ### 项目效果图
 
-![](./src/static/design-sketch/home.png)
-![](./src/static/design-sketch/menu.png)
-![](./src/static/design-sketch/order.png)
-![](./src/static/design-sketch/user.png)
-![](./src/static/design-sketch/login.png)
-![](./src/static/design-sketch/order-details.png)
+![](./src/static/design-sketch/home.jpg)
+![](./src/static/design-sketch/menu.jpg)
+![](./src/static/design-sketch/order.jpg)
+![](./src/static/design-sketch/user.jpg)
+![](./src/static/design-sketch/login.jpg)
+![](./src/static/design-sketch/order-details.jpg)
 ## 写在最后
 
 * 本项目仅用于学习使用，切勿用于商业用途，否则产生的法律后果与作者无关。
