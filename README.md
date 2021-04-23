@@ -57,12 +57,12 @@ yarn build:mp-alipay
 
 |首页|点餐|取餐|我的|登录|订单|
 |---|---|---|---|---|---|---|
-![](./src/static/design-sketch/home.jpg)
-![](./src/static/design-sketch/menu.jpg)
-![](./src/static/design-sketch/order.jpg)
-![](./src/static/design-sketch/user.jpg)
-![](./src/static/design-sketch/login.jpg)
-![](./src/static/design-sketch/order-details.jpg)
+|![](./src/static/design-sketch/home.jpg)|
+|![](./src/static/design-sketch/menu.jpg)|
+|![](./src/static/design-sketch/order.jpg)|
+|![](./src/static/design-sketch/user.jpg)|
+|![](./src/static/design-sketch/login.jpg)|
+|![](./src/static/design-sketch/order-details.jpg)|
 ## 写在最后
 
 * 本项目仅用于学习使用，切勿用于商业用途，否则产生的法律后果与作者无关。
